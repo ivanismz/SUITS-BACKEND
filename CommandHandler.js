@@ -23,6 +23,19 @@ const taskMap = {
     "on_egress_menu_do_subtask_5b2": egressTasks.onEgressMenuDoSubtask5b2,
     "on_egress_menu_do_subtask_5b3": egressTasks.onEgressMenuDoSubtask5b3,
     "on_egress_menu_do_subtask_5c1": egressTasks.onEgressMenuDoSubtask5c1,
+    "on_ingress_menu_do_subtask_1a": ingressTasks.onIngressMenuDoSubtask1a,
+    "on_ingress_menu_do_subtask_1b": ingressTasks.onIngressMenuDoSubtask1b,
+    "on_ingress_menu_do_subtask_1c": ingressTasks.onIngressMenuDoSubtask1c,
+    "on_ingress_menu_do_subtask_2a": ingressTasks.onIngressMenuDoSubtask2a,
+    "on_ingress_menu_do_subtask_2b": ingressTasks.onIngressMenuDoSubtask2b,
+    "on_ingress_menu_do_subtask_2c": ingressTasks.onIngressMenuDoSubtask2c,
+    "on_ingress_menu_do_subtask_3a": ingressTasks.onIngressMenuDoSubtask3a,
+    "on_ingress_menu_do_subtask_3b": ingressTasks.onIngressMenuDoSubtask3b,
+    "on_ingress_menu_do_subtask_3c": ingressTasks.onIngressMenuDoSubtask3c,
+    "on_ingress_menu_do_subtask_3d": ingressTasks.onIngressMenuDoSubtask3d,
+    "on_ingress_menu_do_subtask_4a": ingressTasks.onIngressMenuDoSubtask4a,
+    "on_ingress_menu_do_subtask_4b": ingressTasks.onIngressMenuDoSubtask4b,
+    "on_ingress_menu_do_subtask_5": ingressTasks.onIngressMenuDoSubtask5,
 };
 
 function handleCommand(commandObject) {
