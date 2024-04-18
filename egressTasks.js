@@ -22,7 +22,7 @@ function onEgressMenuDoSubtask1c() {
   return {
     function: "on_egress_menu_do_subtask_1c_HMD",
       parameter: {
-        display_string: "Switch the DCU BATT to Umbilica"
+        display_string: "Switch the DCU BATT to Umbilical"
       }
   };
 }
