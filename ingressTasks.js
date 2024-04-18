@@ -126,7 +126,6 @@ function onIngressMenuDoSubtask1a() {
     onIngressMenuDoSubtask2a,
     onIngressMenuDoSubtask2b,
     onIngressMenuDoSubtask2c,
-    onIngressMenuDoSubtask3c,
     onIngressMenuDoSubtask3a,
     onIngressMenuDoSubtask3b,
     onIngressMenuDoSubtask3c,
