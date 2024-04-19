@@ -1,4 +1,5 @@
 const egressTasks = require('./egressTasks');
+const ingressTasks = require('./ingressTasks');
 const taskStateManager = require('./TaskStateManager');
 
 const taskMap = {
