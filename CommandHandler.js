@@ -23,6 +23,20 @@ const taskMap = {
     "on_egress_menu_do_subtask_5b2": egressTasks.onEgressMenuDoSubtask5b2,
     "on_egress_menu_do_subtask_5b3": egressTasks.onEgressMenuDoSubtask5b3,
     "on_egress_menu_do_subtask_5c1": egressTasks.onEgressMenuDoSubtask5c1,
+    "onEgressMenuDoSubtask5c2": egressTasks.onEgressMenuDoSubtask5c2,
+    "onEgressMenuDoSubtask5c3": egressTasks.onEgressMenuDoSubtask5c3,
+  "onEgressMenuDoSubtask5d": egressTasks.onEgressMenuDoSubtask5d,
+  "onEgressMenuDoSubtask6a": egressTasks.onEgressMenuDoSubtask6a,
+  "onEgressMenuDoSubtask6b": egressTasks.onEgressMenuDoSubtask6b,
+  "onEgressMenuDoSubtask7a": egressTasks.onEgressMenuDoSubtask7a,
+  "onEgressMenuDoSubtask7b": egressTasks.onEgressMenuDoSubtask7b,
+  "onEgressMenuDoSubtask7c": egressTasks.onEgressMenuDoSubtask7c,
+  "onEgressMenuDoSubtask7d": egressTasks.onEgressMenuDoSubtask7d,
+  "onEgressMenuDoSubtask7e": egressTasks.onEgressMenuDoSubtask7e,
+  "onEgressMenuDoSubtask7f": egressTasks.onEgressMenuDoSubtask7f,
+  "onEgressMenuDoSubtask8a": egressTasks.onEgressMenuDoSubtask8a,
+  "onEgressMenuDoSubtask8b": egressTasks.onEgressMenuDoSubtask8b,
+  "onEgressMenuDoSubtask9":egressTasks.onEgressMenuDoSubtask9,
 };
 
 function handleCommand(commandObject) {
