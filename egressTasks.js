@@ -190,6 +190,132 @@ function onEgressMenuDoSubtask5c1() {
   };
 }
 
+function onEgressMenuDoSubtask5c2() {
+  return {
+    function: "on_egress_menu_do_subtask_5c2_HMD",
+    parameter: {
+      display_string: "Wait until Water Coolant Tank is full"
+    }
+  };
+}
+
+function onEgressMenuDoSubtask5c3() {
+  return {
+    function: "on_egress_menu_do_subtask_5c3_HMD",
+    parameter: {
+      display_string: "Switch UIA WATER SUPPLY to OFF (conclude supplying the water coolant)"
+    }
+  };
+}
+
+function onEgressMenuDoSubtask5d() {
+  return {
+    function: "on_egress_menu_do_subtask_5d_HMD",
+    parameter: {
+      display_string: "Switch DCU PUMP to CLOSE to Prevent coolant to flow between suits and UIA"
+    }
+  };
+}
+
+function onEgressMenuDoSubtask6a() {
+  return {
+    function: "on_egress_menu_do_subtask_6a_HMD",
+    parameter: {
+      display_string: "Wait until Suit Pressure is at 4 psi and is equal to O2 Pressure"
+  }
+ };
+}
+
+function onEgressMenuDoSubtask6b() {
+  return {
+    function: "on_egress_menu_do_subtask_6b_HMD",
+    parameter: {
+      display_string: "Switch UIA Depress to OFF"
+    }
+  };
+}
+
+function onEgressMenuDoSubtask7a() {
+  return {
+    function: "on_egress_menu_do_subtask_7a_HMD",
+    parameter: {
+      display_string: "Switch: Switch DCU BATT to LOCAL"
+    }
+  };
+}
+
+function onEgressMenuDoSubtask7b() {
+  return {
+    function: "on_egress_menu_do_subtask_7b_HMD",
+    parameter: {
+      display_string: "Switch DCU OXY to primary"
+  }
+ };
+}
+
+function onEgressMenuDoSubtask7c() {
+  return {
+    function: "on_egress_menu_do_subtask_7c_HMD",
+    parameter: {
+      display_string: "Switch DUC COM to A"
+    }
+  };
+}
+
+function onEgressMenuDoSubtask7d() {
+  return {
+    function: "on_egress_menu_do_subtask_7d_HMD",
+    parameter: {
+      display_string: "Switch FAN to Primary"
+    }
+  };
+}
+
+function onEgressMenuDoSubtask7e() {
+  return {
+    function: "on_egress_menu_do_subtask_7e_HMD",
+    parameter: {
+      display_string: "Switch DCU PUMP to CLOSED"
+ }
+};
+}
+
+function onEgressMenuDoSubtask7f() {
+  return {
+    function: "on_egress_menu_do_subtask_7f_HMD",
+    parameter: {
+      display_string: "Switch DCU CO2 to A (CO2 Scrubber, will need to flip every 10-15 minutes)"
+    }
+  };
+}
+
+function onEgressMenuDoSubtask8a() {
+  return {
+    function: "on_egress_menu_do_subtask_8a_HMD",
+    parameter: {
+      display_string: "Switch UIA EMU POWER to OFF (Deactivate the Umbilical on the UIA side)"
+    } 
+  };
+}
+
+function onEgressMenuDoSubtask8b() {
+  return {
+    function: "on_egress_menu_do_subtask_8b_HMD",
+    parameter: {
+      display_string: "Disconnect UIA and DCU via the cable"
+  }
+ };
+}
+
+function onEgressMenuDoSubtask9() {
+  return {
+    function: "on_egress_menu_do_subtask_9_HMD",
+    parameter: {
+      display_string: "Now you can begin EVA"
+    }
+  };
+}
+
 module.exports = {
   onEgressMenuDoSubtask1a,
   onEgressMenuDoSubtask1b,
@@ -212,4 +338,18 @@ module.exports = {
   onEgressMenuDoSubtask5b2,
   onEgressMenuDoSubtask5b3,
   onEgressMenuDoSubtask5c1,
+  onEgressMenuDoSubtask5c2,
+  onEgressMenuDoSubtask5c3,
+  onEgressMenuDoSubtask5d,
+  onEgressMenuDoSubtask6a,
+  onEgressMenuDoSubtask6b,
+  onEgressMenuDoSubtask7a,
+  onEgressMenuDoSubtask7b,
+  onEgressMenuDoSubtask7c,
+  onEgressMenuDoSubtask7d,
+  onEgressMenuDoSubtask7e,
+  onEgressMenuDoSubtask7f,
+  onEgressMenuDoSubtask8a,
+  onEgressMenuDoSubtask8b,
+  onEgressMenuDoSubtask9,
 };  
