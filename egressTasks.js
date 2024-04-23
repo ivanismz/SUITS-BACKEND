@@ -302,7 +302,7 @@ function onEgressMenuDoSubtask8b() {
   return {
     function: "on_egress_menu_do_subtask_8b_HMD",
     parameter: {
-      display_string: "Disconnect UIA and DCU via the cable"
+      display_string: "Disconnect UIA and DCU via the cable, say next tast"
   }
  };
 }
