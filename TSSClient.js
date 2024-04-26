@@ -1,4 +1,5 @@
 const TSS_URL = 'http://172.18.0.1:14141'; // URL of the TSS
+const axios = require('axios');
 
 async function fetchIMUData() {
     const url = `${TSS_URL}/json_data/IMU.json`; // Construct the full URL to access IMU.json
@@ -46,4 +47,4 @@ const receivedIMUData = {
 };
 
 processIMUData(receivedIMUData);
-module.exports = TSSClient;
+module.exports = {fetchIMUData};

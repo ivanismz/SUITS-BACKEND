@@ -4,6 +4,7 @@ const WebSocket = require('ws');
 const axios = require('axios');
 const { handleCommand } = require('./CommandHandler');
 const { getCurrentState } = require('./TaskStateManager');
+const { open_map } = require('./navigationTasks')
 
 const app = express();
 const server = http.createServer(app);
@@ -31,4 +32,5 @@ app.get('/api/task-state', (req, res) => {
 
 server.listen(3000, '0.0.0.0', () => {
     console.log('Server listening on http://localhost:3000');
+    open_map()
 });
