@@ -1,56 +1,58 @@
-const net = require('net');
-const EventEmitter = require('events');
+const WebSocket = require('ws');
 
-class TSSClient extends EventEmitter {
-    constructor(host, port) {
-        super();
-        this.host = host;
-        this.port = port;
-        this.client = new net.Socket();
+class TSSClient {
+    constructor(url) {
+        this.url = url;
+        this.client = null;
+        this.connect();
     }
 
     connect() {
-        this.client.connect(this.port, this.host, () => {
-            console.log('Successfully connected to TSS Server at ' + this.host + ':' + this.port);
-            this.emit('connect', 'Successfully connected to TSS Server');
+        this.client = new WebSocket(this.url);
+
+        this.client.on('open', () => {
+            console.log('Successfully connected to TSS at ' + this.url);
         });
 
-        this.client.on('data', (data) => {
-            console.log('Received data:', data.toString());
+        this.client.on('message', (data) => {
+            console.log('Received data from TSS:', data);
             this.processData(data);
         });
 
         this.client.on('close', () => {
-            console.log('Connection to TSS Server closed');
-            this.emit('close', 'Connection to TSS Server closed');
+            console.log('Connection to TSS closed. Attempting to reconnect...');
+            setTimeout(() => this.connect(), 5000); // Reconnect every 5 seconds
         });
 
-        this.client.on('error', (err) => {
-            console.error('Connection error:', err);
-            this.emit('error', 'Connection error: ' + err.message);
+        this.client.on('error', (error) => {
+            console.error('Connection error with TSS:', error);
+            this.client.terminate(); // Terminate the existing connection
         });
     }
 
     processData(data) {
         try {
-            const str = data.toString();
-            const parsedData = JSON.parse(str);
-            if (parsedData.imu) {
-                // Emit only the imu data if it exists
-                this.emit('imu-data', parsedData.imu);
+            const json = JSON.parse(data);
+            if (json.imu) {
+                console.log('IMU Data:', json.imu);
             }
-        } catch (e) {
-            console.error('Failed to parse data:', data.toString());
-            this.emit('error', 'Failed to parse data');
+        } catch (err) {
+            console.error('Error parsing data from TSS:', err);
         }
     }
 
     send(data) {
-        this.client.write(JSON.stringify(data));
+        if (this.client.readyState === WebSocket.OPEN) {
+            this.client.send(JSON.stringify(data));
+        } else {
+            console.log('WebSocket is not open. Cannot send data.');
+        }
     }
 
     disconnect() {
-        this.client.end();
+        if (this.client) {
+            this.client.close();
+        }
     }
 }
 

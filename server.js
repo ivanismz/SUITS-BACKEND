@@ -53,7 +53,7 @@ app.get('/api/task-state', (req, res) => {
     res.json(getCurrentState());
 });
 
-server.listen(14141, '172.18.0.1', () => {
-    console.log('Server listening on http://172.18.0.1:14141');
+server.listen(3000, '0.0.0.0', () => {
+    console.log('Server listening on http://localhost:3000');
     connectToTSS(); // Connect to TSS after server is up
 });
