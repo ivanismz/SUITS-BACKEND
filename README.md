@@ -1,7 +1,14 @@
 ### Configure the Environment 
 1. config a conda environment following these two repo:https://github.com/ShishirPatil/gorilla and https://github.com/ShishirPatil/gorilla/tree/main/openfunctions
-2. install npm
-
+   - Note: if you run into errors related to tree-sitter: follow the instruction in https://github.com/ShishirPatil/gorilla/tree/main/openfunctions:
+     `pip3 install tree_sitter`
+     
+     `git clone https://github.com/tree-sitter/tree-sitter-java.git`
+     
+      `git clone https://github.com/tree-sitter/tree-sitter-javascript.git`
+     
+3. install npm
+   
 ### To run LLM with quick command line input:
 run `local_inference_{task_name}.py`, input the user query and the function call will be printed out, type "quit" to exit
 
