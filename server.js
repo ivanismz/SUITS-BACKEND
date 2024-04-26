@@ -39,15 +39,7 @@ function processIMUData(imuData) {
     console.log('EVA 1 Data:', eva1Data);
     console.log('EVA 2 Data:', eva2Data);
 
-    // Example of processing data - let's say you want to calculate some derivative data
-    if (eva1Data.posx && eva2Data.posx) {
-        const distanceBetweenEVAs = Math.sqrt(
-            Math.pow((eva2Data.posx - eva1Data.posx), 2) +
-            Math.pow((eva2Data.posy - eva1Data.posy), 2)
-        );
-        console.log(`Distance between EVA 1 and EVA 2: ${distanceBetweenEVAs} units`);
     }
-}
 
 // Simulated data reception event
 const receivedIMUData = {
@@ -82,4 +74,6 @@ app.get('/api/task-state', (req, res) => {
 
 server.listen(3000, '0.0.0.0', () => {
     console.log('Server listening on http://localhost:3000');
+    fetchIMUData();
+
 });
