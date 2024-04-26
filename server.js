@@ -1,37 +1,64 @@
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
+const axios = require('axios');
 const { handleCommand } = require('./CommandHandler');
 const { getCurrentState } = require('./TaskStateManager');
 
-const TSS_URL = 'ws://172.18.0.1:14141'; // URL of the TSS
+const TSS_URL = 'http://172.18.0.1:14141'; // URL of the TSS
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-let tssClient = null;
 
-// Connect to TSS
-const connectToTSS = () => {
-    tssClient = new WebSocket(TSS_URL);
+// app.use(express.static('/home/space/TSS_2024/public'));
+async function fetchIMUData() {
+    const url = `${TSS_URL}/json_data/IMU.json`; // Construct the full URL to access IMU.json
 
-    tssClient.on('open', function open() {
-        console.log('Connected to TSS successfully');
-    });
+    try {
+        const response = await axios.get(url);
+        console.log('IMU Data:', response.data);
+        processIMUData(response.data)
+        // Process the IMU data as needed
+    } catch (error) {
+        console.error('Failed to fetch IMU data:', error);
+    }
+}
 
-    tssClient.on('message', function incoming(message) {
-        console.log('Received from TSS:', message);
-    });
+// Function to handle IMU data
+function processIMUData(imuData) {
+    if (!imuData || !imuData.imu) {
+        console.error('Invalid IMU data');
+        return;
+    }
 
-    tssClient.on('error', function error(err) {
-        console.error('Connection to TSS failed:', err);
-    });
+    // Accessing the IMU data for EVAs
+    const eva1Data = imuData.imu.eva1;
+    const eva2Data = imuData.imu.eva2;
 
-    tssClient.on('close', function close() {
-        console.log('TSS connection closed, attempting to reconnect...');
-        setTimeout(connectToTSS, 10000); // Try to reconnect every 10 seconds
-    });
+    console.log('EVA 1 Data:', eva1Data);
+    console.log('EVA 2 Data:', eva2Data);
+
+    // Example of processing data - let's say you want to calculate some derivative data
+    if (eva1Data.posx && eva2Data.posx) {
+        const distanceBetweenEVAs = Math.sqrt(
+            Math.pow((eva2Data.posx - eva1Data.posx), 2) +
+            Math.pow((eva2Data.posy - eva1Data.posy), 2)
+        );
+        console.log(`Distance between EVA 1 and EVA 2: ${distanceBetweenEVAs} units`);
+    }
+}
+
+// Simulated data reception event
+const receivedIMUData = {
+    imu: {
+        eva1: { posx: 10, posy: 5, heading: 90 },
+        eva2: { posx: 15, posy: 10, heading: 180 }
+    }
 };
+
+processIMUData(receivedIMUData);
+
 
 wss.on('connection', function connection(ws) {
     console.log('Client connected');
@@ -55,5 +82,4 @@ app.get('/api/task-state', (req, res) => {
 
 server.listen(3000, '0.0.0.0', () => {
     console.log('Server listening on http://localhost:3000');
-    connectToTSS(); // Connect to TSS after server is up
 });
