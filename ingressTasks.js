@@ -4,7 +4,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_1a_HMD",
       parameter: {
-        display_string: "Let's start Ingress Task 1. Connect the UIA and DCU via the cable"
+        display_string: "Let's start Ingress Task 1. Connect the UIA and DCU via the cable. Say 'Ursa, Next Step' to proceed."
       }
     };
   }
@@ -13,7 +13,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_1b_HMD",
       parameter: {
-        display_string: "Switch the UIA EMU power to ON."
+        display_string: "Switch the UIA EMU power to ON. Say 'Ursa, Next Step' to proceed."
       }
     };
   }
@@ -22,7 +22,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_1c_HMD",
         parameter: {
-          display_string: "Switch the DCU BATT to Umbilical."
+          display_string: "Switch the DCU BATT to Umbilical. Say 'Ursa, Next Step' to proceed."
         }
     };
   }
@@ -31,7 +31,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_2a_HMD",
         parameter: {
-          display_string: "Let's move on to Egress Task 2: Vent Oxygen Tanks. Switch the UIA OXY VENT to ON."
+          display_string: "Let's move on to Egress Task 2: Vent Oxygen Tanks. Switch the UIA OXY VENT to ON. Say 'Ursa, Next Step' to proceed."
         }
     };
   }
@@ -40,7 +40,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_2b_HMD",
       parameter: {
-        display_string: "Wait until both Primary and Secondary OXY Tanks are empty."
+        display_string: "Wait until both Primary and Secondary OXY Tanks are empty. Say 'Both of them are empty' to proceed."
       }
     };
   }
@@ -49,7 +49,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_2c_HMD",
       parameter: {
-        display_string: "Switch the UIA OXY VENT to OFF."
+        display_string: "Switch the UIA OXY VENT to OFF. Say 'Ursa, Next Step' to proceed."
       }
     };
   }
@@ -58,7 +58,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_3a_HMD",
       parameter: {
-        display_string: "Let's move to Ingress Task 3: Flush Water Coolant. First, switch the DCU Pump to OPEN"
+        display_string: "Let's move to Ingress Task 3: Flush Water Coolant. First, switch the DCU Pump to OPEN. Say 'Ursa, Next Step' to proceed."
       }
     };
   }
@@ -67,7 +67,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_3b_HMD",
       parameter: {
-        display_string: "Switch UIA WATER WASTE to ON/OPEN."
+        display_string: "Switch UIA WATER WASTE to ON/OPEN. Say 'Ursa, Next Step' to proceed."
       }
     };
   }
@@ -77,7 +77,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_3c_HMD",
       parameter: {
-        display_string: "Wait until Water Coolant Tank is empty."
+        display_string: "Wait until Water Coolant Tank is empty. Say 'Water coolant tank is empty' to proceed."
       }
     };
   }
@@ -86,7 +86,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_3d_HMD",
       parameter: {
-        display_string: "Switch UIA WATER WASTE to OFF."
+        display_string: "Switch UIA WATER WASTE to OFF. Say 'Ursa, Next Step' to proceed."
       }
     };
   }
@@ -95,7 +95,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_4a_HMD",
       parameter: {
-        display_string: "Let's move on to Ingress Task 4: Disconnect IMU to DCU. Switch UIA EMU POWER to OFF"
+        display_string: "Let's move on to Ingress Task 4: Disconnect IMU to DCU. Switch UIA EMU POWER to OFF. Say 'Ursa, Next Step' to proceed."
       }
     };
   }
@@ -104,7 +104,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_4b_HMD",
       parameter: {
-        display_string: "Disconnect the UIA and DCU via the cable"
+        display_string: "Disconnect the UIA and DCU via the cable. Say 'Ursa, Next Step' to proceed."
       }
     };
   }
