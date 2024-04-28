@@ -1,5 +1,74 @@
 // diagnosisTasks.js
 
+// Object that tracks the current state of the diagnosis process
+let diagnosisState = {
+    currentSubtaskIndex: 0,
+    subtasks: [
+      onDiagnosisMenuBeginSubtask1,
+      onDiagnosisMenuDoSubtask1a,
+      onDiagnosisMenuDoSubtask1b,
+      onDiagnosisMenuDoSubtask1c,
+      onDiagnosisMenuBeginSubtask2,
+      onDiagnosisMenuDoSubtask2a,
+      onDiagnosisMenuDoSubtask2b,
+      onDiagnosisMenuDoSubtask2c,
+      onDiagnosisMenuBeginSubtask3,
+      onDiagnosisMenuDoSubtask3a,
+      onDiagnosisMenuDoSubtask3b,
+      onDiagnosisMenuDoSubtask3c,
+      onDiagnosisMenuDoSubtask3d,
+      onDiagnosisMenuDoSubtask3e,
+      onDiagnosisMenuDoSubtask3f,
+      onDiagnosisMenuDoSubtask3g,
+      onDiagnosisMenuBeginSubtask4,
+      onDiagnosisMenuDoSubtask4a,
+      onDiagnosisMenuDoSubtask4b,
+      onDiagnosisMenuDoSubtask4c,
+      onDiagnosisMenuDoSubtask4d,
+      onDiagnosisMenuBeginSubtask5,
+      onDiagnosisMenuDoSubtask5a,
+      onDiagnosisMenuDoSubtask5b,
+      onDiagnosisMenuDoSubtask5c,
+      onDiagnosisMenuDoSubtask6
+    ]
+  };
+
+
+function nextSubtask() {
+    
+    // Check if the there exists a next task
+    if (diagnosisState.currentSubtaskIndex < diagnosisState.subtasks.length - 1) {
+
+      diagnosisState.currentSubtaskIndex++;
+      const nextFunction = diagnosisState.subtasks[diagnosisState.currentSubtaskIndex];
+      return nextFunction();
+
+    } else {
+      // If there are no more subtasks, send a message that this is the case
+      return { message: "All subtasks have been completed." };
+    }
+  }
+
+function previousSubtask() {
+    
+    // Check if the there exists a previous task
+    if (diagnosisState.currentSubtaskIndex > 0) {
+
+      diagnosisState.currentSubtaskIndex--;
+      const previousFunction = diagnosisState.subtasks[diagnosisState.currentSubtaskIndex];
+      return previousFunction();
+
+    } else {
+      return { message: "You are at the first subtask. There's no previous subtask." };
+    }
+  }
+
+function repeatSubtask() {
+    const currentFunction = diagnosisState.subtasks[diagnosisState.currentSubtaskIndex];
+    return currentFunction();
+  }
+
+
 function onDiagnosisMenuBeginSubtask1() {
     return {
       function: "on_diagnosis_menu_begin_subtask_1_HMD",
@@ -262,6 +331,9 @@ function onDiagnosisMenuDoSubtask1a() {
     onDiagnosisMenuDoSubtask5a,
     onDiagnosisMenuDoSubtask5b,
     onDiagnosisMenuDoSubtask5c,
-    onDiagnosisMenuDoSubtask6
+    onDiagnosisMenuDoSubtask6,
+    nextSubtask,
+    previousSubtask,
+    repeatSubtask
   };  
   

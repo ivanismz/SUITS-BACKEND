@@ -1,5 +1,59 @@
 // ingressTasks.js
 
+// Object that tracks the current state of the ingress process
+let ingressState = {
+  currentSubtaskIndex: 0,
+  subtasks: [
+    onIngressMenuDoSubtask1a,
+    onIngressMenuDoSubtask1b,
+    onIngressMenuDoSubtask1c,
+    onIngressMenuDoSubtask2a,
+    onIngressMenuDoSubtask2b,
+    onIngressMenuDoSubtask2c,
+    onIngressMenuDoSubtask3a,
+    onIngressMenuDoSubtask3b,
+    onIngressMenuDoSubtask3c,
+    onIngressMenuDoSubtask3d,
+    onIngressMenuDoSubtask4a,
+    onIngressMenuDoSubtask4b,
+    onIngressMenuDoSubtask5
+  ]
+};
+
+function nextSubtask() {
+  
+  // Check if the there exists a next task
+  if (ingressState.currentSubtaskIndex < ingressState.subtasks.length - 1) {
+
+    ingressState.currentSubtaskIndex++;
+    const nextFunction = ingressState.subtasks[ingressState.currentSubtaskIndex];
+    return nextFunction();
+
+  } else {
+    // If there are no more subtasks, send a message that this is the case
+    return { message: "All subtasks have been completed." };
+  }
+}
+
+function previousSubtask() {
+  
+  // Check if the there exists a previous task
+  if (ingressState.currentSubtaskIndex > 0) {
+
+    ingressState.currentSubtaskIndex--;
+    const previousFunction = ingressState.subtasks[ingressState.currentSubtaskIndex];
+    return previousFunction();
+
+  } else {
+    return { message: "You are at the first subtask. There's no previous subtask." };
+  }
+}
+
+function repeatSubtask() {
+  const currentFunction = ingressState.subtasks[ingressState.currentSubtaskIndex];
+  return currentFunction();
+}
+
 function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_1a_HMD",
@@ -132,6 +186,9 @@ function onIngressMenuDoSubtask1a() {
     onIngressMenuDoSubtask3d,
     onIngressMenuDoSubtask4a,
     onIngressMenuDoSubtask4b,
-    onIngressMenuDoSubtask5
+    onIngressMenuDoSubtask5,
+    nextSubtask,
+    previousSubtask,
+    repeatSubtask
   };  
   
