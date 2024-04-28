@@ -90,25 +90,55 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu, cur
      }
     },
     {
-    "name": "on_rover_start_gps_nav",
-    "description": "starts rover GPS drive command",
+    "name": "on_rover_stop",
+    "description": "end all running scripts, completely stop rover function",
      "parameters": {
             "required": [],
      }
     },
     {
-    "name": "on_rover_leo_bringup",
-    "description": "runs compiled start launch script, preps rover for lmcc control or other commands",
-     "parameters": {
-            "required": [],
-     }
+    "name": "on_rover_forward_drive",
+    "description": "Rover forward drive the given amount of distance in meters",
+    "parameters": { 
+        "distance": 
+            {"type": "integer", 
+             "description": "number meter the rover should drive forward"
+             },
+        "required": ["distance"],
+        },
     },
     {
-    "name": "on_rover_gps_stop",
-    "description": "if rover GPS nav is ongoing, stops GPS nav, otherwise does nothing",
-     "parameters": {
-            "required": [],
-     }
+    "name": "on_rover_reverse_drive",
+    "description": "Rover reverse drive the given amount of distance in meters",
+    "parameters": { 
+        "distance": 
+            {"type": "integer", 
+             "description": "number meter the rover should drive backward or in reverse direction"
+             },
+        "required": ["distance"],
+        },
+    },
+    {
+    "name": "on_rover_left_turn",
+    "description": "Rover left turn for the given amount of angle in degrees",
+    "parameters": { 
+        "angle": 
+            {"type": "integer", 
+             "description": "Degree of angle the rover should left turn in"
+             },
+        "required": ["angle"],
+        },
+    },
+    {
+    "name": "on_rover_right_turn",
+    "description": "Rover right turn for the given amount of angle in degrees",
+    "parameters": { 
+        "angle": 
+            {"type": "integer", 
+             "description": "Degree of angle the rover should right turn in"
+             },
+        "required": ["angle"],
+        },
     }
 ]
     return full_prompt, functions_backend

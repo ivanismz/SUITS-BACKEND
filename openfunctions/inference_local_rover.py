@@ -2,6 +2,8 @@ import json
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from openfunctions_utils import strip_function_calls, parse_function_call
+import os
+
 
 def get_prompt(user_query: str, functions: list = []) -> str:
     """
@@ -74,93 +76,87 @@ pipe = pipeline(
     device=device,
 )
 
-rover_queries = [
-   "return rover from egress",
-   "start rover GPS navigation",
-   "start rover",
-   "start rover manual navigation", 
-   "stop rover GPS navigation"
-]
-
 functions_rover = [
     {
-    "name": "on_rover_return_from_egress",
-    "description": "return the rover from egress to base",
+    "name": "on_rover_start",
+    "description": "start the rover, call the bring up functions",
      "parameters": {
             "required": [],
      }
     },
     {
-    "name": "on_rover_start_gps_nav",
-    "description": "starts rover GPS drive command",
+    "name": "on_rover_return_to_base",
+    "description": "return the rover base (airlock)",
      "parameters": {
             "required": [],
      }
     },
     {
-    "name": "on_rover_leo_bringup",
-    "description": "runs compiled start launch script, preps rover for lmcc control or other commands",
+    "name": "on_rover_stop",
+    "description": "end all running scripts, completely stop rover function",
      "parameters": {
             "required": [],
      }
     },
     {
-    "name": "on_rover_gps_stop",
-    "description": "if rover GPS nav is ongoing, stops GPS nav, otherwise does nothing",
-     "parameters": {
-            "required": [],
-     }
-    }
-]
-
-
-# Example usage 1
-#  This should return 2 functions with the right argument
-query_1: str = "What's the weather like in the two cities of Boston and San Francisco?"
-functions_1 = [
+    "name": "on_rover_forward_drive",
+    "description": "Rover forward drive the given amount of distance in meters",
+    "parameters": { 
+        "distance": 
+            {"type": "integer", 
+             "description": "number meter the rover should drive forward"
+             },
+        "required": ["distance"],
+        },
+    },
     {
-        "name": "get_current_weather",
-        "description": "Get the current weather in a given location",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "location": {
-                    "type": "string",
-                    "description": "The city and state, e.g. San Francisco, CA",
-                },
-                "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]},
-            },
-            "required": ["location"],
+    "name": "on_rover_reverse_drive",
+    "description": "Rover reverse drive the given amount of distance in meters",
+    "parameters": { 
+        "distance": 
+            {"type": "integer", 
+             "description": "number meter the rover should drive backward or in reverse direction"
+             },
+        "required": ["distance"],
+        },
+    },
+    {
+    "name": "on_rover_left_turn",
+    "description": "Rover left turn for the given amount of angle in degrees",
+    "parameters": { 
+        "angle": 
+            {"type": "integer", 
+             "description": "Degree of angle the rover should left turn in"
+             },
+        "required": ["angle"],
+        },
+    },
+    {
+    "name": "on_rover_right_turn",
+    "description": "Rover right turn for the given amount of angle in degrees",
+    "parameters": { 
+        "angle": 
+            {"type": "integer", 
+             "description": "Degree of angle the rover should right turn in"
+             },
+        "required": ["angle"],
         },
     }
-]
+    ]
 
-# Example usage 2
-#  This should return an error since the function cann't help with the prompt
-query_2: str = "What is the freezing point of water at a pressure of 10 kPa?"
-functions_2 = [{"name": "thermodynamics.calculate_boiling_point", "description": "Calculate the boiling point of a given substance at a specific pressure.", "parameters": {"type": "object", "properties": {"substance": {"type": "string", "description": "The substance for which to calculate the boiling point."}, "pressure": {"type": "number", "description": "The pressure at which to calculate the boiling point."}, "unit": {"type": "string", "description": "The unit of the pressure. Default is 'kPa'."}}, "required": ["substance", "pressure"]}}]
+def convert_function_call_dict_to_os_commands(function_call_dict):
+    function_name =  function_call_dict['name']
+    arguments_str = ""
+    for parameter, value in function_call_dict['arguments'].items():
+        arguments_str += f"--{parameter} {value} "
+    cmd = f"python {function_name}.py {arguments_str}"
+    print("cmd is", cmd)
 
+    # returns output as byte string
+    returned_output = os.system(cmd)
 
-# # Generate prompt and obtain model output
-# prompt_1 = get_prompt(query_1, functions=functions_1)
-# output_1 = pipe(prompt_1)
-# fn_call_string, function_call_dict = format_response(output_1[0]['generated_text'])
-# print("--------------------")
-# print(f"Function call strings 1(s): {fn_call_string}")
-# print("--------------------")
-# print(f"OpenAI compatible `function_call`: {function_call_dict}")
-# print("--------------------")
-
-# for rover_query in rover_queries:
-#     # Generate prompt and obtain model output
-#     prompt_1 = get_prompt(rover_query, functions=functions_rover)
-#     output_1 = pipe(prompt_1)
-#     fn_call_string, function_call_dict = format_response(output_1[0]['generated_text'])
-#     print("--------------------")
-#     print(f"User input is: {rover_query}")
-#     print(f"Function call strings 1(s): {fn_call_string}")
-#     print(f"OpenAI compatible `function_call`: {function_call_dict}")
-#     print("--------------------")
+    # using decode() function to convert byte string to string
+    print('returned_output is:', returned_output)
 
 while True:
     input_query = input("Please input your command to the rover: (enter quit to exit)")
@@ -170,6 +166,7 @@ while True:
     prompt_1 = get_prompt(input_query, functions=functions_rover)
     output_1 = pipe(prompt_1)
     fn_call_string, function_call_dict = format_response(output_1[0]['generated_text'])
+    convert_function_call_dict_to_os_commands(function_call_dict)
     print("--------------------")
     print(f"User input is {input_query}")
     print(f"Function call strings 1(s): {fn_call_string}")
