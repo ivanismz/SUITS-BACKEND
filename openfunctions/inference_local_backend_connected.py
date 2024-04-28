@@ -79,19 +79,26 @@ def initialize_pipe():
     )
     return pipe
 
-def create_prompt_and_function_descriptions(user_input_prompt, current_menu, current_task=None):
-    # prefix_prompt = ""
-    # if current_menu == "egress":
-    #     if not current_task:
-    #         print("missing current task")
-        # egree_task_order = "1a, 1b, 1c, 2, 3a, 3b, 3c, 4a1, 4a2, 4a3, 4a4, 4b1, 4b2, 4b3, 4b4, 4c, 5a, 5b1, 5b2, 5b3, 5c1, 5c2, 5c3, 5d, 6a, 6b, 7a, 7b, 7c, 7d, 7e, 7f, 8a, 8b, 9"
-        # prefix_prompt = "Currently I am on egress menu, perform "
-    	# full_prompt = prefix_prompt + user_input_prompt
+def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
     full_prompt = user_input_prompt
-    functions_backend = [
+    egress_functions_backend = [
     {
   	"name": "on_egress_menu_do_next_task",
   	"description": "perform the next egress task",
+  	"parameters": {
+    	"required": []
+  	    }
+	},
+    {
+  	"name": "on_egress_menu_do_previous_task",
+  	"description": "perform the previous egress task",
+  	"parameters": {
+    	"required": []
+  	    }
+	},
+    {
+  	"name": "on_egress_menu_do_current_task",
+  	"description": "perform the current egress task again",
   	"parameters": {
     	"required": []
   	    }
@@ -342,14 +349,179 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu, cur
   	    }
 	}
     ]
+    
+
+    # ######################################## INGRESS ###################################################################
+    ingress_functions_backend = [
+		{
+		"name": "on_ingress_menu_do_next_task",
+		"description": "perform the next ingress task",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_previous_task",
+		"description": "perform the previous ingress task",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_current_task",
+		"description": "perform the current ingress task again",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_1a",
+		"description": "perform on ingress subtask 1a",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_1b",
+		"description": "perform on ingress subtask 1b",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_1c",
+		"description": "perform on ingress subtask 1c",
+		"parameters": {
+			"required": []
+			}   
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_2a",
+		"description": "perform on ingress subtask 2a",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_2b",
+		"description": "perform on ingress subtask 2b",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_2c",
+		"description": "perform on ingress subtask 2c",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_3a",
+		"description": "perform on ingress subtask 3a",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_3b",
+		"description": "perform on ingress subtask 3b",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_3c",
+		"description": "perform on ingress subtask 3c",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_3d",
+		"description": "perform on ingress subtask 3d",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_4a",
+		"description": "perform on ingress subtask 4a",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_4b",
+		"description": "perform on ingress subtask 4b",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_ingress_menu_do_subtask_5",
+		"description": "perform on ingress subtask 5",
+		"parameters": {
+			"required": []
+			}
+		}
+    ]
+    
+
+    # ######################################## NAVIGATION ###################################################################
+    navigation_functions_backend = [
+		{
+		"name": "on_navigation_open_map",
+		"description": "open a 2d map showing my current location, and the location of all stations",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_navigation_remove_pin",
+		"description": "Remove pin with the given pin number",
+		"parameters": { 
+			"pin_number": 
+				{"type": "integer", 
+				"description": "number of the pin to remove"
+				},
+			"required": ["pin_number"],
+			},
+		},
+        {
+		"name": "on_navigation_pin_my_location",
+		"description": "Pin with the current location on map with the given pin number",
+		"parameters": { 
+			"pin_number": 
+				{"type": "integer", 
+				"description": "number of the pin to add"
+				},
+			"required": [],
+			},
+		},
+		{
+		"name": "on_navigation_return_to_airlock",
+		"description": "Assist me to head back to the airlock by showing the path to follow",
+		"parameters": {
+			"required": []
+			}
+		}
+    ]
+    
+    if current_menu == "egress":
+        functions_backend = egress_functions_backend
+    elif current_menu == "ingress":
+        functions_backend = ingress_functions_backend
+    else:
+        functions_backend = navigation_functions_backend
+    print("functions_backend", functions_backend, "full p", full_prompt)
     return full_prompt, functions_backend
 
 pipe = initialize_pipe()
 server_communication_init()
 run_server()
 # try to move this on server
-current_task = "1a"
-current_menu = "egress"
+current_menu = "navigation"
 
 # def on_egress_menu_do_next_task():
 #     curr_task = "1a"
@@ -359,18 +531,13 @@ while True:
 	input_msg = get_server_input()
 	while not input_msg:
 		input_msg = get_server_input()
-    
-	print("input_msg", input_msg)
-           
-	if current_menu == "egress":
-		print("input_msg", input_msg, "task egress")
-		full_prompt, functions_backend = create_prompt_and_function_descriptions(input_msg, current_menu, current_task)
-		system_prompt = "You are an AI programming assistant, you are on menu {}".format(current_menu)
-		prompt_1 = get_prompt(system_prompt, input_msg, functions=functions_backend)
-		output_1 = pipe(prompt_1)
-		fn_call_string, function_call_dict = format_response(output_1[0]['generated_text'])
-		current_task = function_call_dict['name'].split('_')[-1]
-		print("new current task is", current_task)
+	
+	print("input_msg", input_msg, "task ", current_menu)
+	full_prompt, functions_backend = create_prompt_and_function_descriptions(input_msg, current_menu)
+	system_prompt = "You are an AI programming assistant, you are on menu {}".format(current_menu)
+	prompt_1 = get_prompt(system_prompt, input_msg, functions=functions_backend)
+	output_1 = pipe(prompt_1)
+	fn_call_string, function_call_dict = format_response(output_1[0]['generated_text'])
 	print("--------------------")
 	print(f"User input is {input_msg}")
 	print(f"Full prompt is input is {full_prompt}")
