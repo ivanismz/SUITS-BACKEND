@@ -149,7 +149,7 @@ def convert_function_call_dict_to_os_commands(function_call_dict):
     arguments_str = ""
     for parameter, value in function_call_dict['arguments'].items():
         arguments_str += f"--{parameter} {value} "
-    cmd = f"python {function_name}.py {arguments_str}"
+    cmd = f"python ../rover_functions/{function_name}.py {arguments_str}"
     print("cmd is", cmd)
 
     # returns output as byte string
