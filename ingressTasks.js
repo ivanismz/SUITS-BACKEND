@@ -31,7 +31,7 @@ function onIngressMenuDoSubtask1a() {
     return {
       function: "on_ingress_menu_do_subtask_2a_HMD",
         parameter: {
-          display_string: "Let's move on to Egress Task 2: Vent Oxygen Tanks. Switch the UIA OXY VENT to ON. Say 'Ursa, Next Step' to proceed."
+          display_string: "Let's move on to Ingress Task 2: Vent Oxygen Tanks. Switch the UIA OXY VENT to ON. Say 'Ursa, Next Step' to proceed."
         }
     };
   }
