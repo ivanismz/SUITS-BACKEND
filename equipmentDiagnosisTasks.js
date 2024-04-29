@@ -91,6 +91,7 @@ function onDiagnosisMenuStart() {
   }
 
   function onDiagnosisMenuArriveAtWorksite() {
+    diagnosisState.currentSubtaskIndex = 1;
     return {
       function: "on_diagnosis_menu_arrived_at_worksite_HMD",
       parameter: {
@@ -101,6 +102,7 @@ function onDiagnosisMenuStart() {
 
 
 function onDiagnosisMenuIssueFoundRelatedToCable() {
+  diagnosisState.currentSubtaskIndex = 2;
     return {
       function: "on_diagnosis_issue_found_related_to_cable_HMD",
       parameter: {
@@ -110,6 +112,7 @@ function onDiagnosisMenuIssueFoundRelatedToCable() {
   }
 
 function onDiagnosisMenuDoSubtask1a() {
+  diagnosisState.currentSubtaskIndex = 3;
     return {
       function: "on_diagnosis_menu_do_subtask_1a_HMD",
       parameter: {
@@ -119,6 +122,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask1b() {
+    diagnosisState.currentSubtaskIndex = 4;
     return {
       function: "on_diagnosis_menu_do_subtask_1b_HMD",
       parameter: {
@@ -128,6 +132,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask1c() {
+    diagnosisState.currentSubtaskIndex = 5;
     return {
       function: "on_diagnosis_menu_do_subtask_1c_HMD",
         parameter: {
@@ -137,6 +142,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask2() {
+    diagnosisState.currentSubtaskIndex = 6;
     return {
       function: "on_diagnosis_menu_do_subtask_2_HMD",
       parameter: {
@@ -146,6 +152,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask2a() {
+    diagnosisState.currentSubtaskIndex = 7;
     return {
       function: "on_diagnosis_menu_do_subtask_2a_HMD",
         parameter: {
@@ -155,6 +162,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask2b() {
+    diagnosisState.currentSubtaskIndex = 8;
     return {
       function: "on_diagnosis_menu_do_subtask_2b_HMD",
       parameter: {
@@ -164,6 +172,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask2c() {
+    diagnosisState.currentSubtaskIndex = 9;
     return {
       function: "on_diagnosis_menu_do_subtask_2c_HMD",
       parameter: {
@@ -173,6 +182,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask3() {
+    diagnosisState.currentSubtaskIndex = 10;
     return {
       function: "on_diagnosis_menu_do_subtask_3_HMD",
       parameter: {
@@ -182,6 +192,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask3a() {
+    diagnosisState.currentSubtaskIndex = 11;
     return {
       function: "on_diagnosis_menu_do_subtask_3a_HMD",
       parameter: {
@@ -191,6 +202,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask3b() {
+    diagnosisState.currentSubtaskIndex = 12;
     return {
       function: "on_diagnosis_menu_do_subtask_3b_HMD",
       parameter: {
@@ -201,6 +213,7 @@ function onDiagnosisMenuDoSubtask1a() {
   
   
   function onDiagnosisMenuDoSubtask3c() {
+    diagnosisState.currentSubtaskIndex = 13;
     return {
       function: "on_diagnosis_menu_do_subtask_3c_HMD",
       parameter: {
@@ -210,6 +223,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask3d() {
+    diagnosisState.currentSubtaskIndex = 14;
     return {
       function: "on_diagnosis_menu_do_subtask_3d_HMD",
       parameter: {
@@ -219,6 +233,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask3e() {
+    diagnosisState.currentSubtaskIndex = 15;
     return {
       function: "on_diagnosis_menu_do_subtask_3e_HMD",
       parameter: {
@@ -228,6 +243,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask3f() {
+    diagnosisState.currentSubtaskIndex = 16;
     return {
       function: "on_diagnosis_menu_do_subtask_3f_HMD",
       parameter: {
@@ -237,6 +253,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask3g() {
+    diagnosisState.currentSubtaskIndex = 17;
     return {
       function: "on_diagnosis_menu_do_subtask_3g_HMD",
       parameter: {
@@ -246,6 +263,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask4() {
+    diagnosisState.currentSubtaskIndex = 18;
     return {
       function: "on_diagnosis_menu_do_subtask_4_HMD",
       parameter: {
@@ -255,6 +273,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask4a() {
+    diagnosisState.currentSubtaskIndex = 19;
     return {
       function: "on_diagnosis_menu_do_subtask_4a_HMD",
       parameter: {
@@ -264,6 +283,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask4b() {
+    diagnosisState.currentSubtaskIndex = 20;
     return {
       function: "on_diagnosis_menu_do_subtask_4b_HMD",
       parameter: {
@@ -273,6 +293,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask4c() {
+    diagnosisState.currentSubtaskIndex = 21;
     return {
       function: "on_diagnosis_menu_do_subtask_4c_HMD",
       parameter: {
@@ -282,6 +303,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask4d() {
+    diagnosisState.currentSubtaskIndex = 22;
     return {
       function: "on_diagnosis_menu_do_subtask_4d_HMD",
       parameter: {
@@ -291,6 +313,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask5() {
+    diagnosisState.currentSubtaskIndex = 23;
     return {
       function: "on_diagnosis_menu_do_subtask_5_HMD",
       parameter: {
@@ -300,6 +323,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask5a() {
+    diagnosisState.currentSubtaskIndex = 24;
     return {
       function: "on_diagnosis_menu_do_subtask_5a_HMD",
       parameter: {
@@ -309,6 +333,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask5b() {
+    diagnosisState.currentSubtaskIndex = 25;
     return {
       function: "on_diagnosis_menu_do_subtask_5b_HMD",
       parameter: {
@@ -318,6 +343,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
 
   function onDiagnosisMenuDoSubtask5c() {
+    diagnosisState.currentSubtaskIndex = 26;
     return {
       function: "on_diagnosis_menu_do_subtask_5c_HMD",
       parameter: {
@@ -327,6 +353,7 @@ function onDiagnosisMenuDoSubtask1a() {
   }
   
   function onDiagnosisMenuDoSubtask6() {
+    diagnosisState.currentSubtaskIndex = 27;
     return {
       function: "on_diagnosis_menu_do_subtask_6_HMD",
       parameter: {
