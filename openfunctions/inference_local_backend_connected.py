@@ -534,8 +534,8 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 			}   
 		},
 		{
-		"name": "on_diagnosis_menu_do_subtask_2",
-		"description": "perform on diagnosis subtask 2",
+		"name": "on_diagnosis_menu_begin_subtask_2",
+		"description": "perform diagnosis subtask 2",
 		"parameters": {
 			"required": []
 			}
@@ -562,8 +562,8 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 			}
 		},
 		{
-		"name": "on_diagnosis_menu_do_subtask_3",
-		"description": "perform on diagnosis subtask 3",
+		"name": "on_diagnosis_menu_begin_subtask_3",
+		"description": "begin diagnosis subtask 3",
 		"parameters": {
 			"required": []
 			}
@@ -849,8 +849,8 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
         functions_backend = ingress_functions_backend
     elif current_menu == "navigation":
         functions_backend = navigation_functions_backend
-    # elif current_menu == "diagnosis":
-    #     functions_backend = diagnosis_functions_backend
+    elif current_menu == "diagnosis":
+        functions_backend = diagnosis_functions_backend
     else:
         functions_backend = suits_functions_backend
     print("functions_backend", functions_backend, "full p", full_prompt)
@@ -860,7 +860,7 @@ pipe = initialize_pipe()
 server_communication_init()
 run_server()
 # try to move this on server
-current_menu = "navigation"
+current_menu = "diagnosis"
 
 # def on_egress_menu_do_next_task():
 #     curr_task = "1a"

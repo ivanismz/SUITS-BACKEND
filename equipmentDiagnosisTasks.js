@@ -4,17 +4,17 @@
 let diagnosisState = {
     currentSubtaskIndex: 0,
     subtasks: [
-      onDiagnosisMenuGoToWorksite,
-      onDiagnosisMenuDescribeIssue,  
-      onDiagnosisMenuBeginCableRepair,
+      onDiagnosisMenuStart,
+      onDiagnosisMenuArriveAtWorksite,  
+      onDiagnosisMenuIssueFoundRelatedToCable,
       onDiagnosisMenuDoSubtask1a,
       onDiagnosisMenuDoSubtask1b,
       onDiagnosisMenuDoSubtask1c,
-      onDiagnosisMenuBeginSubtask2,
+      onDiagnosisMenuDoSubtask2,
       onDiagnosisMenuDoSubtask2a,
       onDiagnosisMenuDoSubtask2b,
       onDiagnosisMenuDoSubtask2c,
-      onDiagnosisMenuBeginSubtask3,
+      onDiagnosisMenuDoSubtask3,
       onDiagnosisMenuDoSubtask3a,
       onDiagnosisMenuDoSubtask3b,
       onDiagnosisMenuDoSubtask3c,
@@ -22,12 +22,12 @@ let diagnosisState = {
       onDiagnosisMenuDoSubtask3e,
       onDiagnosisMenuDoSubtask3f,
       onDiagnosisMenuDoSubtask3g,
-      onDiagnosisMenuBeginSubtask4,
+      onDiagnosisMenuDoSubtask4,
       onDiagnosisMenuDoSubtask4a,
       onDiagnosisMenuDoSubtask4b,
       onDiagnosisMenuDoSubtask4c,
       onDiagnosisMenuDoSubtask4d,
-      onDiagnosisMenuBeginSubtask5,
+      onDiagnosisMenuDoSubtask5,
       onDiagnosisMenuDoSubtask5a,
       onDiagnosisMenuDoSubtask5b,
       onDiagnosisMenuDoSubtask5c,
@@ -67,7 +67,7 @@ function previousSubtask() {
 
     } else {
       return {
-        function: "on_diagnosis_menu_go_to_worksite_HMD",
+        function: "on_diagnosis_menu_start_HMD",
         parameter: {
           display_string: "You are at the first subtask. There's no previous subtask."
         }
@@ -80,18 +80,19 @@ function repeatSubtask() {
     return currentFunction();
   }
 
-function onDiagnosisMenuGoToWorksite() {
+function onDiagnosisMenuStart() {
+  diagnosisState.currentSubtaskIndex = 0;
     return {
-      function: "on_diagnosis_menu_go_to_worksite_HMD",
+      function: "on_diagnosis_menu_start_HMD",
       parameter: {
         display_string: "Now, let's begin with equipment diagnosis. Please move to the worksite. Upon arrival at the worksite, notify MCC of your arrival. Say 'Ursa, I have arrived', when this is complete."
       }
     };
   }
 
-  function onDiagnosisMenuDescribeIssue() {
+  function onDiagnosisMenuArriveAtWorksite() {
     return {
-      function: "on_diagnosis_menu_describe_issue_HMD",
+      function: "on_diagnosis_menu_arrived_at_worksite_HMD",
       parameter: {
         display_string: "Now, you can begin inspection of the worksite. Once an issue is discovered, relay the issue to MCC. Then, descibe the issue starting off with 'Ursa, the issue is...' "
       }
@@ -99,9 +100,9 @@ function onDiagnosisMenuGoToWorksite() {
   }
 
 
-function onDiagnosisMenuBeginCableRepair() {
+function onDiagnosisMenuIssueFoundRelatedToCable() {
     return {
-      function: "on_diagnosis_menu_begin_cable_repair_HMD",
+      function: "on_diagnosis_issue_found_related_to_cable_HMD",
       parameter: {
         display_string: "Cable Repair procedure received! Please follow the given steps to repair the cable. Let's start 'shut down comm tower'. Tell me 'finished' when you are done."
       }
@@ -135,9 +136,9 @@ function onDiagnosisMenuDoSubtask1a() {
     };
   }
 
-  function onDiagnosisMenuBeginSubtask2() {
+  function onDiagnosisMenuDoSubtask2() {
     return {
-      function: "on_diagnosis_menu_begin_subtask_2_HMD",
+      function: "on_diagnosis_menu_do_subtask_2_HMD",
       parameter: {
         display_string: "Great work, you've completed step 1. Now, let's begin 'Power down MMRTG'. Tell me 'finished' when you are done."
       }
@@ -171,9 +172,9 @@ function onDiagnosisMenuDoSubtask1a() {
     };
   }
 
-  function onDiagnosisMenuBeginSubtask3() {
+  function onDiagnosisMenuDoSubtask3() {
     return {
-      function: "on_diagnosis_menu_begin_subtask_3_HMD",
+      function: "on_diagnosis_menu_do_subtask_3_HMD",
       parameter: {
         display_string: "Great work, you've completed step 2. Now, let's begin 'Cable Swap'. Tell me 'finished' when you are done."
       }
@@ -244,9 +245,9 @@ function onDiagnosisMenuDoSubtask1a() {
     };
   }
 
-  function onDiagnosisMenuBeginSubtask4() {
+  function onDiagnosisMenuDoSubtask4() {
     return {
-      function: "on_diagnosis_menu_begin_subtask_4_HMD",
+      function: "on_diagnosis_menu_do_subtask_4_HMD",
       parameter: {
         display_string: "Great work, you've completed step 3. Now, let's begin 'Restore Power'. Tell me 'finished' when you are done."
       }
@@ -289,9 +290,9 @@ function onDiagnosisMenuDoSubtask1a() {
     };
   }
 
-  function onDiagnosisMenuBeginSubtask5() {
+  function onDiagnosisMenuDoSubtask5() {
     return {
-      function: "on_diagnosis_menu_begin_subtask_5_HMD",
+      function: "on_diagnosis_menu_do_subtask_5_HMD",
       parameter: {
         display_string: "Great work, you've completed step 4. Now, let's begin 'Verify Successful Repair (Both EVs)'. Tell me 'finished' when you are done."
       }
@@ -336,17 +337,17 @@ function onDiagnosisMenuDoSubtask1a() {
   
   
   module.exports = {
-    onDiagnosisMenuGoToWorksite,
-    onDiagnosisMenuDescribeIssue,  
-    onDiagnosisMenuBeginCableRepair,
+    onDiagnosisMenuStart,
+    onDiagnosisMenuArriveAtWorksite,  
+    onDiagnosisMenuIssueFoundRelatedToCable,
     onDiagnosisMenuDoSubtask1a,
     onDiagnosisMenuDoSubtask1b,
     onDiagnosisMenuDoSubtask1c,
-    onDiagnosisMenuBeginSubtask2,
+    onDiagnosisMenuDoSubtask2,
     onDiagnosisMenuDoSubtask2a,
     onDiagnosisMenuDoSubtask2b,
     onDiagnosisMenuDoSubtask2c,
-    onDiagnosisMenuBeginSubtask3,
+    onDiagnosisMenuDoSubtask3,
     onDiagnosisMenuDoSubtask3a,
     onDiagnosisMenuDoSubtask3b,
     onDiagnosisMenuDoSubtask3c,
@@ -354,12 +355,12 @@ function onDiagnosisMenuDoSubtask1a() {
     onDiagnosisMenuDoSubtask3e,
     onDiagnosisMenuDoSubtask3f,
     onDiagnosisMenuDoSubtask3g,
-    onDiagnosisMenuBeginSubtask4,
+    onDiagnosisMenuDoSubtask4,
     onDiagnosisMenuDoSubtask4a,
     onDiagnosisMenuDoSubtask4b,
     onDiagnosisMenuDoSubtask4c,
     onDiagnosisMenuDoSubtask4d,
-    onDiagnosisMenuBeginSubtask5,
+    onDiagnosisMenuDoSubtask5,
     onDiagnosisMenuDoSubtask5a,
     onDiagnosisMenuDoSubtask5b,
     onDiagnosisMenuDoSubtask5c,
