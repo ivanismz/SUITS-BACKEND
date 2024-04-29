@@ -4,7 +4,9 @@
 let diagnosisState = {
     currentSubtaskIndex: 0,
     subtasks: [
-      onDiagnosisMenuBeginSubtask1,
+      onDiagnosisMenuGoToWorksite,
+      onDiagnosisMenuDescribeIssue,  
+      onDiagnosisMenuBeginCableRepair,
       onDiagnosisMenuDoSubtask1a,
       onDiagnosisMenuDoSubtask1b,
       onDiagnosisMenuDoSubtask1c,
@@ -45,7 +47,12 @@ function nextSubtask() {
 
     } else {
       // If there are no more subtasks, send a message that this is the case
-      return { message: "All subtasks have been completed." };
+      return {
+        function: "on_diagnosis_menu_do_subtask_6_HMD",
+        parameter: {
+          display_string: "All subtasks have been completed."
+        }
+      };
     }
   }
 
@@ -59,7 +66,12 @@ function previousSubtask() {
       return previousFunction();
 
     } else {
-      return { message: "You are at the first subtask. There's no previous subtask." };
+      return {
+        function: "on_diagnosis_menu_go_to_worksite_HMD",
+        parameter: {
+          display_string: "You are at the first subtask. There's no previous subtask."
+        }
+      };
     }
   }
 
@@ -68,10 +80,28 @@ function repeatSubtask() {
     return currentFunction();
   }
 
-
-function onDiagnosisMenuBeginSubtask1() {
+function onDiagnosisMenuGoToWorksite() {
     return {
-      function: "on_diagnosis_menu_begin_subtask_1_HMD",
+      function: "on_diagnosis_menu_go_to_worksite_HMD",
+      parameter: {
+        display_string: "Now, let's begin with equipment diagnosis. Please move to the worksite. Upon arrival at the worksite, notify MCC of your arrival. Say 'Ursa, I have arrived', when this is complete."
+      }
+    };
+  }
+
+  function onDiagnosisMenuDescribeIssue() {
+    return {
+      function: "on_diagnosis_menu_describe_issue_HMD",
+      parameter: {
+        display_string: "Now, you can begin inspection of the worksite. Once an issue is discovered, relay the issue to MCC. Then, descibe the issue starting off with 'Ursa, the issue is...' "
+      }
+    };
+  }
+
+
+function onDiagnosisMenuBeginCableRepair() {
+    return {
+      function: "on_diagnosis_menu_begin_cable_repair_HMD",
       parameter: {
         display_string: "Cable Repair procedure received! Please follow the given steps to repair the cable. Let's start 'shut down comm tower'. Tell me 'finished' when you are done."
       }
@@ -306,17 +336,17 @@ function onDiagnosisMenuDoSubtask1a() {
   
   
   module.exports = {
-    onDiagnosisMenuBeginSubtask1,
-    onDiagnosisMenuBeginSubtask2,
-    onDiagnosisMenuBeginSubtask3,
-    onDiagnosisMenuBeginSubtask4,
-    onDiagnosisMenuBeginSubtask5,
+    onDiagnosisMenuGoToWorksite,
+    onDiagnosisMenuDescribeIssue,  
+    onDiagnosisMenuBeginCableRepair,
     onDiagnosisMenuDoSubtask1a,
     onDiagnosisMenuDoSubtask1b,
     onDiagnosisMenuDoSubtask1c,
+    onDiagnosisMenuBeginSubtask2,
     onDiagnosisMenuDoSubtask2a,
     onDiagnosisMenuDoSubtask2b,
     onDiagnosisMenuDoSubtask2c,
+    onDiagnosisMenuBeginSubtask3,
     onDiagnosisMenuDoSubtask3a,
     onDiagnosisMenuDoSubtask3b,
     onDiagnosisMenuDoSubtask3c,
@@ -324,10 +354,12 @@ function onDiagnosisMenuDoSubtask1a() {
     onDiagnosisMenuDoSubtask3e,
     onDiagnosisMenuDoSubtask3f,
     onDiagnosisMenuDoSubtask3g,
+    onDiagnosisMenuBeginSubtask4,
     onDiagnosisMenuDoSubtask4a,
     onDiagnosisMenuDoSubtask4b,
     onDiagnosisMenuDoSubtask4c,
     onDiagnosisMenuDoSubtask4d,
+    onDiagnosisMenuBeginSubtask5,
     onDiagnosisMenuDoSubtask5a,
     onDiagnosisMenuDoSubtask5b,
     onDiagnosisMenuDoSubtask5c,

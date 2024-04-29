@@ -31,7 +31,12 @@ function nextSubtask() {
 
   } else {
     // If there are no more subtasks, send a message that this is the case
-    return { message: "All subtasks have been completed." };
+    return {
+      function: "on_ingress_menu_do_subtask_5_HMD",
+      parameter: {
+        display_string: "All subtasks have been completed."
+      }
+    };
   }
 }
 
@@ -45,7 +50,12 @@ function previousSubtask() {
     return previousFunction();
 
   } else {
-    return { message: "You are at the first subtask. There's no previous subtask." };
+    return {
+      function: "on_ingress_menu_do_subtask_1a_HMD",
+      parameter: {
+        display_string: "You are at the first subtask. There's no previous subtask."
+      }
+    };
   }
 }
 

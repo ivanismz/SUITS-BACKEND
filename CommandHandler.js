@@ -59,7 +59,7 @@ function handleCommand(commandObject) {
 
         if (taskMap[name]) {
             // Before executing, we can check the state if necessary
-            const currentState = taskStateManager.getCurrentState(name);
+            // const currentState = taskStateManager.getCurrentState(name);
 
             // Call the function associated with the command name
             const result = taskMap[name](args);
