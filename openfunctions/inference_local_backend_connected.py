@@ -468,6 +468,227 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
     ]
     
 
+    # ######################################## Diagnosis ###################################################################
+    diagnosis_functions_backend = [
+		{
+		"name": "on_diagnosis_menu_do_next_task",
+		"description": "perform the next diagnosis task",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_previous_task",
+		"description": "perform the previous diagnosis task",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_current_task",
+		"description": "perform the current diagnosis task again",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_start",
+		"description": "start the equipment diagnosis task",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_arrived_at_worksite",
+		"description": "the user has arrived at the worksite or the destination for equipment repair",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_issue_found_related_to_cable",
+		"description": "the issue found after the diagnosis inspection is related to cable, perform cable repair",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_1a",
+		"description": "perform on diagnosis subtask 1a",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_1b",
+		"description": "perform on diagnosis subtask 1b",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_1c",
+		"description": "perform on diagnosis subtask 1c",
+		"parameters": {
+			"required": []
+			}   
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_2",
+		"description": "perform on diagnosis subtask 2",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_2a",
+		"description": "perform on diagnosis subtask 2a",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_2b",
+		"description": "perform on diagnosis subtask 2b",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_2c",
+		"description": "perform on diagnosis subtask 2c",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_3",
+		"description": "perform on diagnosis subtask 3",
+		"parameters": {
+			"required": []
+			}
+		},
+        {
+		"name": "on_diagnosis_menu_do_subtask_3a",
+		"description": "perform on diagnosis subtask 3a",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_3b",
+		"description": "perform on diagnosis subtask 3b",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_3c",
+		"description": "perform on diagnosis subtask 3c",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_3d",
+		"description": "perform on diagnosis subtask 3d",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_3e",
+		"description": "perform on diagnosis subtask 3e",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_3f",
+		"description": "perform on diagnosis subtask 3f",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_3g",
+		"description": "perform on diagnosis subtask 3g",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_4",
+		"description": "perform on diagnosis subtask 4",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_4a",
+		"description": "perform on diagnosis subtask 4a",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_4b",
+		"description": "perform on diagnosis subtask 4b",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_4c",
+		"description": "perform on diagnosis subtask 4c",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_4d",
+		"description": "perform on diagnosis subtask 4d",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_5",
+		"description": "perform on diagnosis subtask 5",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_5a",
+		"description": "perform on diagnosis subtask 5a",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_5b",
+		"description": "perform on diagnosis subtask 5b",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_5c",
+		"description": "perform on diagnosis subtask 5c",
+		"parameters": {
+			"required": []
+			}
+		},
+		{
+		"name": "on_diagnosis_menu_do_subtask_6",
+		"description": "perform on diagnosis subtask 6",
+		"parameters": {
+			"required": []
+			}
+		}
+    ]
+    
     # ######################################## NAVIGATION ###################################################################
     navigation_functions_backend = [
 		{
@@ -508,12 +729,130 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 		}
     ]
     
+	# ######################################## NAVIGATION ###################################################################
+    suits_functions_backend = [
+		{
+		"name": "on_suits_get_time_left",
+		"description": "get the time left of the given type of data on my suit",
+		"parameters": { 
+			"data_type": 
+				{"type": "string", 
+				"description": "the type of data to check for time left on the suit",
+                "enum": ["battery", "oxygen"]
+				},
+			"required": ["data_type"],
+			},
+		},{
+		"name": "on_suits_get_primary_oxygen_storage",
+		"description": "get the primary oxygen storage on my suit",
+		"parameters": {
+			"required": []
+			}
+		},{
+        "name": "on_suits_get_secondary_oxygen_storage",
+		"description": "get the secondary oxygen storage on my suit",
+		"parameters": {
+			"required": []
+			}
+		},{
+		"name": "on_suits_get_primary_oxygen_pressure",
+		"description": "get the primary oxygen pressure on my suit",
+		"parameters": {
+			"required": []
+			}
+		},{
+		"name": "on_suits_get_secondary_oxygen_pressure",
+		"description": "get the secondary oxygen pressure on my suit",
+		"parameters": {
+			"required": []
+			}
+        },{
+		"name": "on_suits_get_oxygen_consumption",
+		"description": "get the oxygen consumption of my suit",
+		"parameters": {
+			"required": []
+			}
+		},{
+		"name": "on_suits_get_my_heart_rate",
+		"description": "get my heart rate",
+		"parameters": {
+			"required": []
+			}
+		},{
+		"name": "on_suits_get_co2_production",
+		"description": "get the co2 (carbon dioxide) production on my suit",
+		"parameters": {
+			"required": []
+			}
+		},{
+		"name": "on_suits_get_pressure",
+		"description": "get the pressure of given data type on my suit",
+		"parameters": { 
+			"data_type": 
+				{"type": "string", 
+				"description": "the type of data to get pressure of on the suit",
+                "enum": ["oxygen", "co2", "carbon dioxide", "other", "total"]
+				},
+			"required": ["data_type"],
+			},
+		},{
+		"name": "on_suits_get_fan_rate_per_minute",
+		"description": "get the fan rate per minute (rpm) given fan type specified as primary or secondary",
+		"parameters": { 
+			"fan_type": 
+				{"type": "string", 
+				"description": "the type of fan date to get the rate of on the suit",
+                "enum": ["primary", "secondary"]
+				},
+			"required": ["fan_type"],
+			},
+		},{
+		"name": "on_suits_get_helmet_pressure_co2",
+		"description": "get the co2 (carbon dioxide) pressure in the helmet",
+		"parameters": {
+			"required": []
+			}
+		},{
+		"name": "on_suits_get_srubber_co2_storage",
+		"description": "get the srcubber co2 (carbon dioxide) storage of given srubber type on my suit",
+		"parameters": { 
+			"scrubber_type": 
+				{"type": "string", 
+				"description": "the scrubber type to get the co2 (carbon dioxide) storage of on the suit",
+                "enum": ["a", "b"]
+				},
+			"required": ["scrubber_type"],
+			},
+		},{
+		"name": "on_suits_get_temperature",
+		"description": "get the temperature in my suit",
+		"parameters": {
+			"required": []
+			}
+		},{
+		"name": "on_suits_get_coolant_pressure",
+		"description": "get the coolant pressure of given data type on my suit",
+		"parameters": { 
+			"data_type": 
+				{"type": "string", 
+				"description": "the type of data to get the coolant pressure of on the suit",
+                "enum": ["liquid", "gas"]
+				},
+			"required": ["data_type"],
+			},
+		}
+    ]
+    
     if current_menu == "egress":
         functions_backend = egress_functions_backend
     elif current_menu == "ingress":
         functions_backend = ingress_functions_backend
-    else:
+    elif current_menu == "navigation":
         functions_backend = navigation_functions_backend
+    # elif current_menu == "diagnosis":
+    #     functions_backend = diagnosis_functions_backend
+    else:
+        functions_backend = suits_functions_backend
     print("functions_backend", functions_backend, "full p", full_prompt)
     return full_prompt, functions_backend
 
