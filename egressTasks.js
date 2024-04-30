@@ -83,7 +83,9 @@ function repeatSubtask() {
   const currentFunction = ingressState.subtasks[ingressState.currentSubtaskIndex];
   return currentFunction();
 }
+
 function onEgressMenuDoSubtask1a() {
+  egressState.currentSubtaskIndex = 0;
   return {
     function: "on_egress_menu_do_subtask_1a_HMD",
     parameter: {
@@ -93,6 +95,7 @@ function onEgressMenuDoSubtask1a() {
 }
 
 function onEgressMenuDoSubtask1b() {
+  egressState.currentSubtaskIndex = 1;
   return {
     function: "on_egress_menu_do_subtask_1b_HMD",
     parameter: {
@@ -102,6 +105,7 @@ function onEgressMenuDoSubtask1b() {
 }
 
 function onEgressMenuDoSubtask1c() {
+  egressState.currentSubtaskIndex = 2;
   return {
     function: "on_egress_menu_do_subtask_1c_HMD",
       parameter: {
@@ -111,6 +115,7 @@ function onEgressMenuDoSubtask1c() {
 }
 
 function onEgressMenuDoSubtask2() {
+  egressState.currentSubtaskIndex = 3;
   return {
     function: "on_egress_menu_do_subtask_2_HMD",
       parameter: {
@@ -120,6 +125,7 @@ function onEgressMenuDoSubtask2() {
 }
 
 function onEgressMenuDoSubtask3a() {
+  egressState.currentSubtaskIndex = 4;
   return {
     function: "on_egress_menu_do_subtask_3a_HMD",
     parameter: {
@@ -129,6 +135,7 @@ function onEgressMenuDoSubtask3a() {
 }
 
 function onEgressMenuDoSubtask3b() {
+  egressState.currentSubtaskIndex = 5;
   return {
     function: "on_egress_menu_do_subtask_3b_HMD",
     parameter: {
@@ -138,6 +145,7 @@ function onEgressMenuDoSubtask3b() {
 }
 
 function onEgressMenuDoSubtask3c() {
+  egressState.currentSubtaskIndex = 6;
   return {
     function: "on_egress_menu_do_subtask_3c_HMD",
     parameter: {
@@ -147,6 +155,7 @@ function onEgressMenuDoSubtask3c() {
 }
 
 function onEgressMenuDoSubtask4a1() {
+  egressState.currentSubtaskIndex = 7;
   return {
     function: "on_egress_menu_do_subtask_4a1_HMD",
     parameter: {
@@ -157,6 +166,7 @@ function onEgressMenuDoSubtask4a1() {
 
 
 function onEgressMenuDoSubtask4a2() {
+  egressState.currentSubtaskIndex = 8;
   return {
     function: "on_egress_menu_do_subtask_4a2_HMD",
     parameter: {
@@ -166,6 +176,7 @@ function onEgressMenuDoSubtask4a2() {
 }
 
 function onEgressMenuDoSubtask4a3() {
+  egressState.currentSubtaskIndex = 9;
   return {
     function: "on_egress_menu_do_subtask_4a3_HMD",
     parameter: {
@@ -175,6 +186,7 @@ function onEgressMenuDoSubtask4a3() {
 }
 
 function onEgressMenuDoSubtask4a4() {
+  egressState.currentSubtaskIndex = 10;
   return {
     function: "on_egress_menu_do_subtask_4a4_HMD",
     parameter: {
@@ -184,6 +196,7 @@ function onEgressMenuDoSubtask4a4() {
 }
 
 function onEgressMenuDoSubtask4b1() {
+  egressState.currentSubtaskIndex = 11;
   return {
     function: "on_egress_menu_do_subtask_4b1_HMD",
     parameter: {
@@ -193,6 +206,7 @@ function onEgressMenuDoSubtask4b1() {
 }
 
 function onEgressMenuDoSubtask4b2() {
+  egressState.currentSubtaskIndex = 12;
   return {
     function: "on_egress_menu_do_subtask_4b2_HMD",
     parameter: {
@@ -202,6 +216,7 @@ function onEgressMenuDoSubtask4b2() {
 }
 
 function onEgressMenuDoSubtask4b3() {
+  egressState.currentSubtaskIndex = 13;
   return {
     function: "on_egress_menu_do_subtask_4b3_HMD",
     parameter: {
@@ -211,6 +226,7 @@ function onEgressMenuDoSubtask4b3() {
 }
 
 function onEgressMenuDoSubtask4b4() {
+  egressState.currentSubtaskIndex = 14;
   return {
     function: "on_egress_menu_do_subtask_4b4_HMD",
     parameter: {
@@ -220,6 +236,7 @@ function onEgressMenuDoSubtask4b4() {
 }
 
 function onEgressMenuDoSubtask4c() {
+  egressState.currentSubtaskIndex = 15;
   return {
     function: "on_egress_menu_do_subtask_4c_HMD",
     parameter: {
@@ -229,6 +246,7 @@ function onEgressMenuDoSubtask4c() {
 }
 
 function onEgressMenuDoSubtask5a() {
+  egressState.currentSubtaskIndex = 16;
   return {
     function: "on_egress_menu_do_subtask_5a_HMD",
     parameter: {
@@ -238,6 +256,7 @@ function onEgressMenuDoSubtask5a() {
 }
 
 function onEgressMenuDoSubtask5b1() {
+  egressState.currentSubtaskIndex = 17;
   return {
     function: "on_egress_menu_do_subtask_5b1_HMD",
     parameter: {
@@ -247,6 +266,7 @@ function onEgressMenuDoSubtask5b1() {
 }
 
 function onEgressMenuDoSubtask5b2() {
+  egressState.currentSubtaskIndex = 18;
   return {
     function: "on_egress_menu_do_subtask_5b2_HMD",
     parameter: {
@@ -256,6 +276,7 @@ function onEgressMenuDoSubtask5b2() {
 }
 
 function onEgressMenuDoSubtask5b3() {
+  egressState.currentSubtaskIndex = 19;
   return {
     function: "on_egress_menu_do_subtask_5b3_HMD",
     parameter: {
@@ -265,6 +286,7 @@ function onEgressMenuDoSubtask5b3() {
 }
 
 function onEgressMenuDoSubtask5c1() {
+  egressState.currentSubtaskIndex = 20;
   return {
     function: "on_egress_menu_do_subtask_5c1_HMD",
     parameter: {
@@ -274,6 +296,7 @@ function onEgressMenuDoSubtask5c1() {
 }
 
 function onEgressMenuDoSubtask5c2() {
+  egressState.currentSubtaskIndex = 21;
   return {
     function: "on_egress_menu_do_subtask_5c2_HMD",
     parameter: {
@@ -283,6 +306,7 @@ function onEgressMenuDoSubtask5c2() {
 }
 
 function onEgressMenuDoSubtask5c3() {
+  egressState.currentSubtaskIndex = 22;
   return {
     function: "on_egress_menu_do_subtask_5c3_HMD",
     parameter: {
@@ -292,6 +316,7 @@ function onEgressMenuDoSubtask5c3() {
 }
 
 function onEgressMenuDoSubtask5d() {
+  egressState.currentSubtaskIndex = 23;
   return {
     function: "on_egress_menu_do_subtask_5d_HMD",
     parameter: {
@@ -301,6 +326,7 @@ function onEgressMenuDoSubtask5d() {
 }
 
 function onEgressMenuDoSubtask6a() {
+  egressState.currentSubtaskIndex = 24;
   return {
     function: "on_egress_menu_do_subtask_6a_HMD",
     parameter: {
@@ -310,6 +336,7 @@ function onEgressMenuDoSubtask6a() {
 }
 
 function onEgressMenuDoSubtask6b() {
+  egressState.currentSubtaskIndex = 25;
   return {
     function: "on_egress_menu_do_subtask_6b_HMD",
     parameter: {
@@ -319,6 +346,7 @@ function onEgressMenuDoSubtask6b() {
 }
 
 function onEgressMenuDoSubtask7a() {
+  egressState.currentSubtaskIndex = 26;
   return {
     function: "on_egress_menu_do_subtask_7a_HMD",
     parameter: {
@@ -328,6 +356,7 @@ function onEgressMenuDoSubtask7a() {
 }
 
 function onEgressMenuDoSubtask7b() {
+  egressState.currentSubtaskIndex = 27;
   return {
     function: "on_egress_menu_do_subtask_7b_HMD",
     parameter: {
@@ -337,6 +366,7 @@ function onEgressMenuDoSubtask7b() {
 }
 
 function onEgressMenuDoSubtask7c() {
+  egressState.currentSubtaskIndex = 28;
   return {
     function: "on_egress_menu_do_subtask_7c_HMD",
     parameter: {
@@ -346,6 +376,7 @@ function onEgressMenuDoSubtask7c() {
 }
 
 function onEgressMenuDoSubtask7d() {
+  egressState.currentSubtaskIndex = 29;
   return {
     function: "on_egress_menu_do_subtask_7d_HMD",
     parameter: {
@@ -355,6 +386,7 @@ function onEgressMenuDoSubtask7d() {
 }
 
 function onEgressMenuDoSubtask7e() {
+  egressState.currentSubtaskIndex = 30;
   return {
     function: "on_egress_menu_do_subtask_7e_HMD",
     parameter: {
@@ -364,6 +396,7 @@ function onEgressMenuDoSubtask7e() {
 }
 
 function onEgressMenuDoSubtask7f() {
+  egressState.currentSubtaskIndex = 31;
   return {
     function: "on_egress_menu_do_subtask_7f_HMD",
     parameter: {
@@ -373,6 +406,7 @@ function onEgressMenuDoSubtask7f() {
 }
 
 function onEgressMenuDoSubtask8a() {
+  egressState.currentSubtaskIndex = 32;
   return {
     function: "on_egress_menu_do_subtask_8a_HMD",
     parameter: {
@@ -382,6 +416,7 @@ function onEgressMenuDoSubtask8a() {
 }
 
 function onEgressMenuDoSubtask8b() {
+  egressState.currentSubtaskIndex = 33;
   return {
     function: "on_egress_menu_do_subtask_8b_HMD",
     parameter: {
@@ -391,6 +426,7 @@ function onEgressMenuDoSubtask8b() {
 }
 
 function onEgressMenuDoSubtask9() {
+  egressState.currentSubtaskIndex = 34;
   return {
     function: "on_egress_menu_do_subtask_9_HMD",
     parameter: {

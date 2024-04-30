@@ -83,9 +83,6 @@ function sendUserInputToLLM(inputMessage, callback){
     })
 }
 
-
-
-
 // HTTP endpoint to get current task state
 app.get('/api/task-state', (req, res) => {
     res.json(getCurrentState());
