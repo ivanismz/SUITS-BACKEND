@@ -1,6 +1,7 @@
 const egressTasks = require('./egressTasks');
 const ingressTasks = require('./ingressTasks');
 const equipmentDiagnosisTasks = require('./equipmentDiagnosisTasks');
+const navigationTasks = require('./navigationTasks')
 const taskStateManager = require('./TaskStateManager');
 
 
@@ -40,6 +41,9 @@ const taskMap = {
     "on_egress_menu_do_subtask_8a": egressTasks.onEgressMenuDoSubtask8a,
     "on_egress_menu_do_subtask_8b": egressTasks.onEgressMenuDoSubtask8b,
     "on_egress_menu_do_subtask_9": egressTasks.onEgressMenuDoSubtask9,
+    "on_egress_menu_do_next_task": egressTasks.nextSubtask,
+    "on_egress_menu_do_current_task": egressTasks.repeatSubtask,
+    "on_egress_menu_do_previous_task": egressTasks.previousSubtask,
     "on_ingress_menu_do_subtask_1a": ingressTasks.onIngressMenuDoSubtask1a,
     "on_ingress_menu_do_subtask_1b": ingressTasks.onIngressMenuDoSubtask1b,
     "on_ingress_menu_do_subtask_1c": ingressTasks.onIngressMenuDoSubtask1c,
@@ -86,7 +90,12 @@ const taskMap = {
     "on_diagnosis_issue_found_related_to_cable": equipmentDiagnosisTasks.onDiagnosisMenuIssueFoundRelatedToCable,
     "on_diagnosis_menu_do_next_task": equipmentDiagnosisTasks.nextSubtask,
     "on_diagnosis_menu_do_previous_task": equipmentDiagnosisTasks.previousSubtask,
-    "on_diagnosis_menu_do_current_task": equipmentDiagnosisTasks.repeatSubtask
+    "on_diagnosis_menu_do_current_task": equipmentDiagnosisTasks.repeatSubtask,
+    "on_navigation_open_map": navigationTasks.onNavigationOpenMap, 
+    "on_navigation_remove_pin": navigationTasks.onNavigationRemovePin,
+    "on_navigation_pin_my_location": navigationTasks.onNavigationPinMyLocation,
+    "on_navigation_return_to_airlock": navigationTasks.onNavigationReturnToAirlock,
+    "on_navigation_close_map": navigationTasks.onNavigationCloseMap
 };
 
 function handleCommand(commandObject) {
@@ -95,10 +104,10 @@ function handleCommand(commandObject) {
 
         if (taskMap[name]) {
             // Before executing, we can check the state if necessary
-            // const currentState = taskStateManager.getCurrentState(name);
+            const currentState = taskStateManager.getCurrentState(name);
 
-            // Call the function associated with the command name
-            const result = taskMap[name](args);
+            // Call the function associated with the command name with spread arguments
+            const result = taskMap[name](...args); // Using spread syntax to pass arguments individually
 
             // After execution, update the state
             taskStateManager.updateState(name, { finished: true }); // Example of an update
@@ -111,7 +120,6 @@ function handleCommand(commandObject) {
         return { error: error.message };
     }
 }
-
 module.exports = { handleCommand };
 
 
