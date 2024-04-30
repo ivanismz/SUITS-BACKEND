@@ -1,5 +1,88 @@
 // egressTasks.js
+let egressState = {
+  currentSubtaskIndex: 0,
+  subtasks: [
+  onEgressMenuDoSubtask1a,
+  onEgressMenuDoSubtask1b,
+  onEgressMenuDoSubtask1c,
+  onEgressMenuDoSubtask2,
+  onEgressMenuDoSubtask3a,
+  onEgressMenuDoSubtask3b,
+  onEgressMenuDoSubtask3c,
+  onEgressMenuDoSubtask4a1,
+  onEgressMenuDoSubtask4a2,
+  onEgressMenuDoSubtask4a3,
+  onEgressMenuDoSubtask4a4,
+  onEgressMenuDoSubtask4b1,
+  onEgressMenuDoSubtask4b2,
+  onEgressMenuDoSubtask4b3,
+  onEgressMenuDoSubtask4b4,
+  onEgressMenuDoSubtask4c,
+  onEgressMenuDoSubtask5a,
+  onEgressMenuDoSubtask5b1,
+  onEgressMenuDoSubtask5b2,
+  onEgressMenuDoSubtask5b3,
+  onEgressMenuDoSubtask5c1,
+  onEgressMenuDoSubtask5c2,
+  onEgressMenuDoSubtask5c3,
+  onEgressMenuDoSubtask5d,
+  onEgressMenuDoSubtask6a,
+  onEgressMenuDoSubtask6b,
+  onEgressMenuDoSubtask7a,
+  onEgressMenuDoSubtask7b,
+  onEgressMenuDoSubtask7c,
+  onEgressMenuDoSubtask7d,
+  onEgressMenuDoSubtask7e,
+  onEgressMenuDoSubtask7f,
+  onEgressMenuDoSubtask8a,
+  onEgressMenuDoSubtask8b,
+  onEgressMenuDoSubtask9,
+  ]
+};
 
+function nextSubtask() {
+  
+  // Check if the there exists a next task
+  if (egressState.currentSubtaskIndex < egressState.subtasks.length - 1) {
+
+    egressState.currentSubtaskIndex++;
+    const nextFunction = egressState.subtasks[egressState.currentSubtaskIndex];
+    return nextFunction();
+
+  } else {
+    // If there are no more subtasks, send a message that this is the case
+    return {
+      function: "on_egress_menu_do_subtask_9_HMD",
+      parameter: {
+        display_string: "Now you can begin EVA"
+      }
+    };
+  }
+}
+
+function previousSubtask() {
+  
+  // Check if the there exists a previous task
+  if (egressState.currentSubtaskIndex > 0) {
+
+    egressState.currentSubtaskIndex--;
+    const previousFunction = egressState.subtasks[egressState.currentSubtaskIndex];
+    return previousFunction();
+
+  } else {
+    return {
+      function: "on_egress_menu_do_subtask_1a_HMD",
+      parameter: {
+        display_string: "You are at the first subtask. There's no previous subtask."
+      }
+    };
+  }
+}
+
+function repeatSubtask() {
+  const currentFunction = ingressState.subtasks[ingressState.currentSubtaskIndex];
+  return currentFunction();
+}
 function onEgressMenuDoSubtask1a() {
   return {
     function: "on_egress_menu_do_subtask_1a_HMD",
@@ -352,4 +435,7 @@ module.exports = {
   onEgressMenuDoSubtask8a,
   onEgressMenuDoSubtask8b,
   onEgressMenuDoSubtask9,
+  nextSubtask,
+  previousSubtask,
+  repeatSubtask
 };  

@@ -1,87 +1,214 @@
-// Assuming GPS data retrieval and image manipulation utilities are available
+const Jimp = require('jimp');
 const fs = require('fs');
-const Jimp = require('jimp'); // Image manipulation library
-const { fetchIMUData } = require('./TSSClient'); // Function to get data from TSS
-const mapImagePath = '/path/to/map/base_map_image.png'; // Path to the map image
+const punycode = require('punycode/');
+// const { getCurrentIMU } = require('./TSSClient');
 
-// Example list of stations and pins as placeholders
+const mapImagePath = './images/map_no_icons.png';
+const homeIconPath = './images/home_icon.png';
+const roverIconPath = './images/rover_icon.png';
+const pinIconPath = './images/pin_icon.png';
+const currentLocationIconPath = './images/current_location_icon.png';
+const stationIconPath = './images/station_icon.png';
+
 let stations = {
-  'Station A': { x: 100, y: 150 },
-  'Station B': { x: 200, y: 250 },
-  // ... other stations
-};
+    'Station A': { posx: 150, posy: 500 }, 
+    'Station B': { posx: 300, posy: 250 }, 
+    'Station C': { posx: 500, posy: 100 }, 
+    'Station D': { posx: 600, posy: 240 }, 
+    'Home': { posx: 380, posy: 500}
+  };
+  
 
 let pins = {
-  // '1': { x: 30, y: 50 },
-  // ... other pins
+'1': { posx: 30, posy: 50 },
+'2': { posx: 120, posy: 220 }
 };
 
-// Convert GPS to 2D coordinates on the map image
-function convertGPSto2D(gpsData) {
-  // Dummy conversion for example
+  const testIMUData = {
+    eva1: { posx: 200, posy: 200, heading: 90 },
+    eva2: { posx: 300, posy: 300, heading: 180 }
+  };  
+
+  const testROVERData = {
+    rover: {
+      posx: 270,
+      posy: 478.90,
+      qr_id: 12
+    }
+  };
+
+  // Mock the getCurrentIMU to use test data
+async function getCurrentIMU() {
+    return new Promise(resolve => resolve(testIMUData));
+  }
+  
+async function getCurrentRover() {
+return new Promise(resolve => resolve(testROVERData));
+}
+
+// Constants for map scaling - these would be specific to your map's coordinate system
+const xScale = 1; // Scale factor for the x-coordinate from IMU to map units
+const yScale = 1; // Scale factor for the y-coordinate from IMU to map units
+const xOffset = 0; // Offset for the x-coordinate to align with the map's origin
+const yOffset = 0; // Offset for the y-coordinate to align with the map's origin
+
+function convertGPSto2D(Data) {
+  // Convert IMU positions (posx, posy) to map coordinates
+  const mapX = Data.posx * xScale + xOffset;
+  const mapY = Data.posy * yScale + yOffset;
   return {
-    x: parseInt(gpsData.longitude * 1000),
-    y: parseInt(gpsData.latitude * 1000)
+    posx: mapX,
+    posy: mapY
   };
 }
 
-// Open map, draw astronauts, pins, and stations
-async function open_map() {
-  const imuData = await fetchIMUData(); // Fetch IMU data
+async function overlayIconAndLabel(map, iconPath, position, label, includeLabel = true) {
+    const icon = await Jimp.read(iconPath);
+    map.composite(icon, position.posx - icon.getWidth() / 2, position.posy - icon.getHeight() / 2);
+  
+    if (includeLabel && label) {
+      const font = await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE);
+      const textWidth = Jimp.measureText(font, label);
+      // Define textHeight based on the font height
+      const textHeight = Jimp.measureTextHeight(font, label);
+      // Padding below the icon to the bottom left corner of the text
+      const textPadding = 10; 
+      const labelX = position.posx - textWidth / 2;
+      const labelY = position.posy + icon.getHeight() / 3 + textPadding;
+  
+      // Create a mask to paint the text onto
+      const textMask = new Jimp(textWidth, textHeight, 0x00000000);
+      // Print the label onto the mask
+      await textMask.print(font, 0, 0, label);
+  
+      // Define the bright green color
+      const brightGreen = { r: 0, g: 255, b: 0 };
+  
+      // Change the color of the label to bright green on the mask
+      textMask.scan(0, 0, textWidth, textHeight, function (posx, posy, idx) {
+        // If the pixel is not completely transparent (i.e., is part of the text)
+        if (this.bitmap.data[idx + 3] > 0) {
+          this.bitmap.data[idx + 0] = brightGreen.r;
+          this.bitmap.data[idx + 1] = brightGreen.g;
+          this.bitmap.data[idx + 2] = brightGreen.b;
+        }
+      });
+  
+      // Composite the colored text mask onto the map
+      map.composite(textMask, labelX, labelY);
+    }
+  }
+  
+// Function to open the map and update with current GPS info, pins, and stations
 
-  // Load the map image
-  const map = await Jimp.read(mapImagePath);
+async function onNavigationOpenMap() {
+    try {
+      const imuData = await getCurrentIMU();
+      const roverData = await getCurrentRover();
+      const map = await Jimp.read(mapImagePath);
+  
+      // Overlay home icon and label
+      const homePosition = stations['Home'];
+      await overlayIconAndLabel(map, homeIconPath, homePosition, 'Home');
+  
+      // Remove 'Home' from stations as it's already processed
+      delete stations['Home'];
+  
+      // Overlay stations and labels
+      for (const [label, position] of Object.entries(stations)) {
+        await overlayIconAndLabel(map, stationIconPath, position, label);
+      }
+  
+      // Overlay mock rover data
+      const roverPosition = convertGPSto2D(roverData.rover);
+      await overlayIconAndLabel(map, roverIconPath, roverPosition, 'Rover');
+  
+      // Overlay mock pins
+      for (const pin of Object.entries(pins)) {
+        const pinPosition = convertGPSto2D(pin[1]);
+        await overlayIconAndLabel(map, pinIconPath, pinPosition, `Pin ${pin[0]}`);
+    }
 
-  // Draw pins
-  for (const pinNumber of Object.keys(pins)) {
-    // Draw each pin on the map image based on its coordinates
-    map.circle({ x: pins[pinNumber].x, y: pins[pinNumber].y, radius: 10, color: '#00FF00' });
+    // Overlay EVA locations, don't label eva1 as it's the user's icon
+    for (const [evaLabel, evaData] of Object.entries(imuData)) {
+        const evaPosition = convertGPSto2D(evaData);
+        await overlayIconAndLabel(map, currentLocationIconPath, evaPosition, evaLabel, evaLabel !== 'eva1');
+    }
+  
+      const mapBuffer = await map.getBufferAsync(Jimp.MIME_PNG);
+      fs.writeFileSync('final_map.png', mapBuffer);
+      return {
+        function: "on_navigation_open_map_HMD",
+        parameter: {
+          image: "",  
+          display_string: "Map has been opened"
+        }
+      };
+    } catch (error) {
+      console.error('Error during map generation:', error);
+    }
   }
 
-  // Draw stations
-  for (const stationName of Object.keys(stations)) {
-    // Draw each station on the map image based on its coordinates
-    map.circle({ x: stations[stationName].x, y: stations[stationName].y, radius: 10, color: '#FF0000' });
-  }
+  function onNavigationCloseMap() {
+    return {
+        function: "on_navigation_close_map_HMD",
+        parameter: {
+          display_string: "Map closed"
+        }
+      };
+    }
 
-  // Draw astronauts' current location
-  const eva1Location = convertGPSto2D(imuData.eva1);
-  map.circle({ x: eva1Location.x, y: eva1Location.y, radius: 10, color: '#0000FF' });
-
-  const eva2Location = convertGPSto2D(imuData.eva2);
-  map.circle({ x: eva2Location.x, y: eva2Location.y, radius: 10, color: '#0000FF' });
-
-  // Save or send the map image
-  const mapBuffer = await map.getBufferAsync(Jimp.MIME_PNG);
-  sendMapToHMD(mapBuffer); // Send this buffer to HMD (function needs to be defined)
-}
-
-// Remove a pin by pin number
-async function remove_pin(pinNumber) {
-  if (pins[pinNumber]) {
-    delete pins[pinNumber];
-    await open_map(); // Update map
-    sendTextToHMD(`Pin ${pinNumber} has been removed!`); // Notify HMD (function needs to be defined)
+// Function to remove a pin from the map
+async function onNavigationRemovePin(pinNumber) {
+    const pinKey = pinNumber.toString();
+  if (pins[pinKey]) {
+    delete pins[pinKey];
+    await on_navigation_open_map();
+    return {
+        function: "on_navigation_remove_pin_HMD",
+        parameter: {
+          display_string: "`Pin ${pinNumber} has been removed!"
+        }
+      };
   }
 }
 
-// Pin current location
-async function pin_my_location(pinNumber) {
-  const imuData = await fetchIMUData(); // Fetch IMU data
-  const currentLocation = convertGPSto2D(imuData.eva1); // Assume EVA1's current GPS data
-  pins[pinNumber] = currentLocation; // Add the pin
-  await open_map(); // Update map
-  sendTextToHMD(`Your location has been added as pin ${pinNumber}`); // Notify HMD (function needs to be defined)
-}
+// Function to add a pin for the current location
+async function onNavigationPinMyLocation(pinNumber) {
+    const imuData = await getCurrentIMU();
+    if (!imuData.eva1 || imuData.eva1.posx === undefined || imuData.eva1.posy === undefined) {
+      console.error("Invalid IMU data:", imuData.eva1);
+      return;
+    }const currentLocation = convertGPSto2D(imuData.eva1);
 
-// Placeholder for the actual implementation of sending map to HMD
-function sendMapToHMD(mapBuffer) {
-  // Implement the actual logic to send the map to HMD
-}
+    // If no pin number is provided, find the next available spot
+    if (pinNumber === undefined) {
+        let nextPinNumber = 1;
+        while (pins[nextPinNumber.toString()] !== undefined) {
+            nextPinNumber++;
+        }
+        pinNumber = nextPinNumber;
+    }
 
-// Placeholder for the actual implementation of sending text to HMD
-function sendTextToHMD(message) {
-  // Implement the actual logic to send a text message to HMD
-}
+    const pinKey = pinNumber.toString();
+    pins[pinKey] = currentLocation;
+  
+    await on_navigation_open_map();
+    return {
+        function: "on_navigation_pin_my_location_HMD",
+        parameter: {
+          display_string: "Your location has been added as a Pin ${pinNumber}"
+        }
+      };
+  }
+  
+function onNavigationReturnToAirlock() {
+    return {
+        function: "on_navigation_return_to_airlock_HMD",
+        parameter: {
+          display_string: ""
+        }
+      };
+    }
 
-module.exports = { open_map, remove_pin, pin_my_location };
+module.exports = { onNavigationOpenMap, onNavigationRemovePin, onNavigationPinMyLocation, onNavigationReturnToAirlock, onNavigationCloseMap };
