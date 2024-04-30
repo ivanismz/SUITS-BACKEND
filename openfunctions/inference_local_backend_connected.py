@@ -729,9 +729,15 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 		}
     ]
     
-	# ######################################## NAVIGATION ###################################################################
+	# ######################################## SUITS DATA ###################################################################
     suits_functions_backend = [
 		{
+       "name": "on_suits_open_my_suit",
+       "description": "show all of my suit’s data",
+       "parameters": {
+           "required": []
+           }
+       }, {
 		"name": "on_suits_get_time_left",
 		"description": "get the time left of the given type of data on my suit",
 		"parameters": { 
@@ -743,30 +749,17 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 			"required": ["data_type"],
 			},
 		},{
-		"name": "on_suits_get_primary_oxygen_storage",
-		"description": "get the primary oxygen storage on my suit",
-		"parameters": {
-			"required": []
-			}
+		"name": "on_suits_get_oxygen_storage",
+		"description": "get the oxygen storage of given oxygen type on my suit, either primary or secondary",
+		"parameters": { 
+			"data_type": 
+				{"type": "string", 
+				"description": "the type of data to check for oxygen storage on the suit",
+                "enum": ["primary", "secondary"]
+				},
+			"required": ["data_type"],
+			},
 		},{
-        "name": "on_suits_get_secondary_oxygen_storage",
-		"description": "get the secondary oxygen storage on my suit",
-		"parameters": {
-			"required": []
-			}
-		},{
-		"name": "on_suits_get_primary_oxygen_pressure",
-		"description": "get the primary oxygen pressure on my suit",
-		"parameters": {
-			"required": []
-			}
-		},{
-		"name": "on_suits_get_secondary_oxygen_pressure",
-		"description": "get the secondary oxygen pressure on my suit",
-		"parameters": {
-			"required": []
-			}
-        },{
 		"name": "on_suits_get_oxygen_consumption",
 		"description": "get the oxygen consumption of my suit",
 		"parameters": {
@@ -791,7 +784,7 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 			"data_type": 
 				{"type": "string", 
 				"description": "the type of data to get pressure of on the suit",
-                "enum": ["oxygen", "co2", "carbon dioxide", "other", "total"]
+                "enum": ["oxygen", "primary oxygen", "secondary oxygen", "co2", "carbon dioxide", "other", "total"]
 				},
 			"required": ["data_type"],
 			},
@@ -799,12 +792,12 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 		"name": "on_suits_get_fan_rate_per_minute",
 		"description": "get the fan rate per minute (rpm) given fan type specified as primary or secondary",
 		"parameters": { 
-			"fan_type": 
+			"data_type": 
 				{"type": "string", 
 				"description": "the type of fan date to get the rate of on the suit",
                 "enum": ["primary", "secondary"]
 				},
-			"required": ["fan_type"],
+			"required": ["data_type"],
 			},
 		},{
 		"name": "on_suits_get_helmet_pressure_co2",
@@ -813,15 +806,15 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 			"required": []
 			}
 		},{
-		"name": "on_suits_get_srubber_co2_storage",
-		"description": "get the srcubber co2 (carbon dioxide) storage of given srubber type on my suit",
+		"name": "on_suits_get_scrubber_co2_storage",
+		"description": "get the scrubber co2 (carbon dioxide) storage of given scrubber type A or Type B on my suit",
 		"parameters": { 
-			"scrubber_type": 
+			"data_type": 
 				{"type": "string", 
-				"description": "the scrubber type to get the co2 (carbon dioxide) storage of on the suit",
-                "enum": ["a", "b"]
+				"description": "the type of scrubber to get the storage of on the suit",
+                "enum": ["A", "B"]
 				},
-			"required": ["scrubber_type"],
+			"required": ["data_type"],
 			},
 		},{
 		"name": "on_suits_get_temperature",
@@ -860,7 +853,7 @@ pipe = initialize_pipe()
 server_communication_init()
 run_server()
 # try to move this on server
-current_menu = "diagnosis"
+current_menu = "egress"
 
 # def on_egress_menu_do_next_task():
 #     curr_task = "1a"

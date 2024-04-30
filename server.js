@@ -27,6 +27,7 @@ const wss = new WebSocket.Server({ server });
 // });
 
 wss.on('connection', function connection(ws) {
+    console.log("Connected!")
   ws.on('message', function incoming(message) {
       try {
         // {"user_input": "do task 1a"}

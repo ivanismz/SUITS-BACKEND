@@ -4,6 +4,7 @@ import shlex
 import os
 from pathlib import Path
 from typing import Union
+import time
 
 
 class SshClient():
@@ -109,6 +110,8 @@ def main():
 
     client2.cmd(['source /opt/ros/humble/setup.bash', 'ros2 run leo_bringup leo_system']) 
     client3.cmd(['source /opt/ros/humble/setup.bash', 'ros2 run tf2_ros static_transform_publisher 0.1 0 0.02 3.1415926 0 0 base_link laser']) 
-
+    time.sleep(2)
+    print("system ^C")
+    os.system("^C")
 
 main()

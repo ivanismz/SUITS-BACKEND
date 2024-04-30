@@ -3,6 +3,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from openfunctions_utils import strip_function_calls, parse_function_call
 import os
+import time
 
 
 def get_prompt(user_query: str, functions: list = []) -> str:
@@ -147,19 +148,18 @@ functions_rover = [
 def convert_function_call_dict_to_os_commands(function_call_dict):
     function_name =  function_call_dict['name']
     arguments_str = ""
+    print_argument = ""
     for parameter, value in function_call_dict['arguments'].items():
         arguments_str += f"--{parameter} {value} "
+        print_argument += parameter + ": " + str(value) + " "
     cmd = f"python ../rover_functions/{function_name}.py {arguments_str}"
-    print("cmd is", cmd)
+    print(f"Calling function: {function_name} {print_argument}")
 
     # returns output as byte string
     returned_output = os.system(cmd)
 
-    # using decode() function to convert byte string to string
-    print('returned_output is:', returned_output)
-
 while True:
-    input_query = input("Please input your command to the rover: (enter quit to exit)")
+    input_query = input("Hi I am Ursa, your LLM powered voice assistance. What would you like me to do?: (say quit to exit)")
     if input_query == "quit":
         print("Exit")
         break
@@ -167,8 +167,9 @@ while True:
     output_1 = pipe(prompt_1)
     fn_call_string, function_call_dict = format_response(output_1[0]['generated_text'])
     convert_function_call_dict_to_os_commands(function_call_dict)
-    print("--------------------")
-    print(f"User input is {input_query}")
-    print(f"Function call strings 1(s): {fn_call_string}")
-    print(f"OpenAI compatible `function_call`: {function_call_dict}")
-    print("--------------------")
+    # print(f"Calling function: {function_call_dict['name']} with argument")
+    # print("--------------------")
+    # print(f"User input is {input_query}")
+    # print(f"Function call strings 1(s): {fn_call_string}")
+    # print(f"OpenAI compatible `function_call`: {function_call_dict}")
+    # print("--------------------")
