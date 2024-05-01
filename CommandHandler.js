@@ -98,7 +98,7 @@ const taskMap = {
     "on_navigation_close_map": navigationTasks.onNavigationCloseMap
 };
 
-function handleCommand(commandObject) {
+async function handleCommand(commandObject) {
     try {
         const { name, arguments: args } = commandObject;
 
@@ -107,7 +107,7 @@ function handleCommand(commandObject) {
             const currentState = taskStateManager.getCurrentState(name);
 
             // Call the function associated with the command name with spread arguments
-            const result = taskMap[name](...args); // Using spread syntax to pass arguments individually
+            const result = await taskMap[name](args); // Using spread syntax to pass arguments individually
 
             // After execution, update the state
             taskStateManager.updateState(name, { finished: true }); // Example of an update

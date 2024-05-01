@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^1.6.8",
     "body-parser": "^1.20.2",
+    "conda": "^0.0.1-a17",
     "express": "^4.19.2",
     "jimp": "^0.3.11",
     "mongoose": "^8.2.4",

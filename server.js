@@ -7,14 +7,15 @@ const { getCurrentState } = require('./TaskStateManager');
 
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server, maxPayload: 10 * 1024 * 1024 }); // 10 MB max payload
 
 // wss.on('connection', function connection(ws) {
 //     console.log('Client connected');
-//     ws.on('message', function incoming(message) {
+//     ws.on('message', async function incoming(message) {
 //         try {
 //             const commandObject = JSON.parse(message);
-//             const response = handleCommand(commandObject);
+//             const response = await handleCommand(commandObject);
+//             console.log('Preparing to send response:', JSON.stringify(response));
 //             ws.send(JSON.stringify(response));
 //         } catch (error) {
 //             ws.send(JSON.stringify({ error: error.message }));
@@ -31,11 +32,11 @@ wss.on('connection', function connection(ws) {
         // {"user_input": "do task 1a"}
           const inputMessage = JSON.parse(message); // Parse incoming message as JSON
           console.log(inputMessage["user_input"]);
-          sendUserInputToLLM(inputMessage, (state, message, data, error)=> {
+          sendUserInputToLLM(inputMessage, async (state, message, data, error)=> {
             if(state) {
                 console.log(data);
                 commandObject = data["llm_response"];
-                const response = handleCommand(commandObject); // Handle the command to get a response object
+                const response = await handleCommand(commandObject); // Handle the command to get a response object
 
                 // Serialize the response object to JSON and send it back to the client
                 ws.send(JSON.stringify(response)); 
