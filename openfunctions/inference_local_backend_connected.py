@@ -698,6 +698,13 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 			"required": []
 			}
 		},
+        {
+		"name": "on_navigation_close_map",
+		"description": "close the 2d map",
+		"parameters": {
+			"required": []
+			}
+		},
 		{
 		"name": "on_navigation_remove_pin",
 		"description": "Remove pin with the given pin number",
@@ -853,13 +860,14 @@ pipe = initialize_pipe()
 server_communication_init()
 run_server()
 # try to move this on server
-current_menu = "diagnosis"
+current_menu = "navigation"
 
 # def on_egress_menu_do_next_task():
 #     curr_task = "1a"
     
 
 while True: 
+	print("in backend inference")
 	input_msg = get_server_input()
 	while not input_msg:
 		input_msg = get_server_input()

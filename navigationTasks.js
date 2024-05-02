@@ -166,16 +166,26 @@ async function onNavigationOpenMap() {
 
 // Function to remove a pin from the map
 async function onNavigationRemovePin(pinNumber) {
-    const pinKey = pinNumber.toString();
+  pinNumber = pinNumber['pin_number'];
+  const pinKey = pinNumber.toString();
   if (pins[pinKey]) {
     delete pins[pinKey];
-    await on_navigation_open_map();
+    // await on_navigation_open_map();
+    await onNavigationOpenMap();
     return {
         function: "on_navigation_remove_pin_HMD",
         parameter: {
-          display_string: "Pin ${pinNumber} has been removed!"
+          display_string: `Pin ${pinNumber} has been removed!`
         }
       };
+  }
+  else{
+    return {
+      function: "on_navigation_remove_pin_HMD",
+      parameter: {
+        display_string: `Pin ${pinNumber} has not been added, please try again with a different pin number`
+      }
+    };
   }
 }
 
@@ -195,15 +205,19 @@ async function onNavigationPinMyLocation(pinNumber) {
         }
         pinNumber = nextPinNumber;
     }
+    else {
+      pinNumber = pinNumber['pin_number'];
+    }
 
     const pinKey = pinNumber.toString();
     pins[pinKey] = currentLocation;
   
-    await on_navigation_open_map();
+    // await on_navigation_open_map();
+    await onNavigationOpenMap();
     return {
         function: "on_navigation_pin_my_location_HMD",
         parameter: {
-          display_string: "Your location has been added as a Pin ${pinNumber}"
+          display_string: `Your location has been added as a Pin ${pinNumber}`
         }
       };
   }
