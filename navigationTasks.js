@@ -102,52 +102,58 @@ async function overlayIconAndLabel(map, iconPath, position, label, includeLabel 
 // Function to open the map and update with current GPS info, pins, and stations
 
 async function onNavigationOpenMap() {
-    try {
-      const imuData = await getCurrentIMU();
-      const roverData = await getCurrentRover();
-      const map = await Jimp.read(mapImagePath);
-  
-      // Overlay home icon and label
-      const homePosition = stations['Home'];
-      await overlayIconAndLabel(map, homeIconPath, homePosition, 'Home');
-  
-      // Remove 'Home' from stations as it's already processed
-      delete stations['Home'];
-  
-      // Overlay stations and labels
-      for (const [label, position] of Object.entries(stations)) {
-        await overlayIconAndLabel(map, stationIconPath, position, label);
-      }
-  
-      // Overlay mock rover data
-      const roverPosition = convertGPSto2D(roverData.rover);
-      await overlayIconAndLabel(map, roverIconPath, roverPosition, 'Rover');
-  
-      // Overlay mock pins
-      for (const pin of Object.entries(pins)) {
-        const pinPosition = convertGPSto2D(pin[1]);
-        await overlayIconAndLabel(map, pinIconPath, pinPosition, `Pin ${pin[0]}`);
+  try {
+    console.log('Fetching IMU and Rover data...');
+    const imuData = await getCurrentIMU();
+    const roverData = await getCurrentRover();
+    console.log('Loading base map image...');
+    const map = await Jimp.read(mapImagePath);
+
+    console.log('Processing Home position...');
+    const homePosition = stations['Home'];
+    await overlayIconAndLabel(map, homeIconPath, homePosition, 'Home');
+    delete stations['Home']; // Clean up if not needed further
+
+    console.log('Overlaying stations...');
+    for (const [label, position] of Object.entries(stations)) {
+      await overlayIconAndLabel(map, stationIconPath, position, label);
     }
 
-    // Overlay EVA locations, don't label eva1 as it's the user's icon
-    for (const [evaLabel, evaData] of Object.entries(imuData)) {
-        const evaPosition = convertGPSto2D(evaData);
-        await overlayIconAndLabel(map, currentLocationIconPath, evaPosition, evaLabel, evaLabel !== 'eva1');
+    console.log('Overlaying Rover...');
+    const roverPosition = convertGPSto2D(roverData.rover);
+    await overlayIconAndLabel(map, roverIconPath, roverPosition, 'Rover');
+
+    console.log('Overlaying Pins...');
+    for (const [pinLabel, pinData] of Object.entries(pins)) {
+      const pinPosition = convertGPSto2D(pinData);
+      await overlayIconAndLabel(map, pinIconPath, pinPosition, `Pin ${pinLabel}`);
     }
-  
-      const mapBuffer = await map.getBufferAsync(Jimp.MIME_PNG);
-      fs.writeFileSync('final_map.png', mapBuffer);
+
+    console.log('Overlaying EVA locations...');
+    for (const [evaLabel, evaData] of Object.entries(imuData)) {
+      const evaPosition = convertGPSto2D(evaData);
+      await overlayIconAndLabel(map, currentLocationIconPath, evaPosition, evaLabel, evaLabel !== 'eva1');
+    }
+
+    console.log('Generating image buffer...');
+    const mapBuffer = await map.getBufferAsync(Jimp.MIME_PNG);
+    const mapBase64 = mapBuffer.toString('base64');
+    fs.writeFileSync('final_map.png', mapBuffer);  // Optionally save for debugging
+    console.log('base64 conversion success buffer generated, length:', mapBase64.length);
       return {
         function: "on_navigation_open_map_HMD",
-        parameter: {
-          image: "",  
-          display_string: "Map has been opened"
+          parameter: {
+            image: `data:image/png;base64,${mapBase64}`,
+            display_string: "Map has been opened"
         }
       };
-    } catch (error) {
-      console.error('Error during map generation:', error);
-    }
+  } catch (error) {
+    console.error('Error during map generation:', error);
+    return { error: error.message };
   }
+}
+
+
 
   function onNavigationCloseMap() {
     return {
@@ -167,7 +173,7 @@ async function onNavigationRemovePin(pinNumber) {
     return {
         function: "on_navigation_remove_pin_HMD",
         parameter: {
-          display_string: "`Pin ${pinNumber} has been removed!"
+          display_string: "Pin ${pinNumber} has been removed!"
         }
       };
   }

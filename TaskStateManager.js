@@ -48,6 +48,11 @@ const taskState = {
     "on_ingress_menu_do_subtask_4a": { finished: false },
     "on_ingress_menu_do_subtask_4b": { finished: false },
     "on_ingress_menu_do_subtask_5": { finished: false },
+    "on_navigation_open_map": { finished: false },
+    "on_navigation_remove_pin": { finished: false },
+    "on_navigation_pin_my_location": { finished: false },
+    "on_navigation_return_to_airlock": { finished: false },
+    "on_navigation_close_map": { finished: false },
 };
 
 function getCurrentState(taskName) {
