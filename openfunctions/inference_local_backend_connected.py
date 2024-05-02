@@ -853,7 +853,7 @@ pipe = initialize_pipe()
 server_communication_init()
 run_server()
 # try to move this on server
-current_menu = "egress"
+current_menu = "diagnosis"
 
 # def on_egress_menu_do_next_task():
 #     curr_task = "1a"
