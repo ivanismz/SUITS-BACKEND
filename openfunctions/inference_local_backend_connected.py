@@ -843,6 +843,36 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 		}
     ]
     
+	# ######################################## GEOLOGICAL SAMPLING ###################################################################
+    geosampling_functions_backend = [
+		{
+       "name": "on_geosampling_check_current_sample",
+       "description": "check the data of the cureent rock sample",
+       "parameters": {
+           "required": []
+           }
+       }
+    ]
+    
+	# ######################################## PANEL CONTROL ###################################################################
+    panel_functions_backend = [
+		{
+       "name": "on_panel_open_top_menu",
+       "description": "open the top menu",
+       "parameters": {
+           "required": []
+           }
+       },{
+       "name": "on_panel_close_top_menu",
+       "description": "close the top menu",
+       "parameters": {
+           "required": []
+           }
+       }
+    ]
+    
+    # functions_backend = navigation_functions_backend + egress_functions_backend + panel_functions_backend
+
     if current_menu == "egress":
         functions_backend = egress_functions_backend
     elif current_menu == "ingress":
@@ -851,20 +881,25 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
         functions_backend = navigation_functions_backend
     elif current_menu == "diagnosis":
         functions_backend = diagnosis_functions_backend
+    elif current_menu == "geosampling":
+        functions_backend = geosampling_functions_backend
+    elif current_menu == "panel":
+        functions_backend = panel_functions_backend
     else:
         functions_backend = suits_functions_backend
-    print("functions_backend", functions_backend, "full p", full_prompt)
+    print("functions_backend", functions_backend, "full prompt", full_prompt)
     return full_prompt, functions_backend
 
 pipe = initialize_pipe()
 server_communication_init()
 run_server()
 # try to move this on server
-current_menu = "navigation"
+# current_menu = "navigation"
+current_menu = "egress"
 
 # def on_egress_menu_do_next_task():
 #     curr_task = "1a"
-    
+
 
 while True: 
 	print("in backend inference")
