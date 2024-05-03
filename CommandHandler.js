@@ -1,7 +1,8 @@
 const egressTasks = require('./egressTasks');
 const ingressTasks = require('./ingressTasks');
 const equipmentDiagnosisTasks = require('./equipmentDiagnosisTasks');
-const navigationTasks = require('./navigationTasks')
+const navigationTasks = require('./navigationTasks');
+const biomedicalTasks = require('./biomedicalTasks');
 const taskStateManager = require('./TaskStateManager');
 
 
@@ -95,7 +96,20 @@ const taskMap = {
     "on_navigation_remove_pin": navigationTasks.onNavigationRemovePin,
     "on_navigation_pin_my_location": navigationTasks.onNavigationPinMyLocation,
     "on_navigation_return_to_airlock": navigationTasks.onNavigationReturnToAirlock,
-    "on_navigation_close_map": navigationTasks.onNavigationCloseMap
+    "on_navigation_close_map": navigationTasks.onNavigationCloseMap,
+    "on_suits_get_incorrect_request": biomedicalTasks.onSuitsGetIncorrectRequest,
+    "on_suits_open_my_suit": biomedicalTasks.onSuitsOpenMySuit,
+    "on_suits_get_time_left": biomedicalTasks.onSuitsGetTimeLeft,
+    "on_suits_get_oxygen_storage": biomedicalTasks.onSuitsGetOxygenStorage,
+    "on_suits_get_my_heart_rate": biomedicalTasks.onSuitsGetMyHeartRate,
+    "on_suits_get_oxygen_pressure": biomedicalTasks.onSuitsGetPressureData,
+    "on_suits_get_fan_rate_per_minute": biomedicalTasks.onSuitsGetFanRatePerMinute,
+    "on_suits_get_helmet_pressure_co2": biomedicalTasks.onSuitsGetHelmetPressureCO2,
+    "on_suits_get_scrubber_co2_storage": biomedicalTasks.onSuitsGetScrubberCO2Storage,
+    "on_suits_get_temperature": biomedicalTasks.onSuitsGetTemperature,
+    "on_suits_get_coolant_pressure": biomedicalTasks.onSuitsGetCoolantPressure,
+    "show_my_suits_data": biomedicalTasks.showMySuitsData,
+    "show_partner_suits_data": biomedicalTasks.showPartnerSuitsData
 };
 
 async function handleCommand(commandObject) {

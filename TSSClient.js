@@ -37,6 +37,19 @@ async function getCurrentSpec() {
         console.error('Failed to fetch Spec data:', error);
     }
 }
+
+async function getCurrentTelemetry() {
+    const url = `${TSS_URL}/json_data/teams/10/Telemetry.json`; // Construct the full URL to access Telemetry.json
+
+    try {
+        const response = await axios.get(url);
+        console.log('Telemetry Data:', response.data);
+        processTelemetryData(response.data); // Process the Telemetry data as needed
+    } catch (error) {
+        console.error('Failed to fetch Telemetry data:', error);
+    }
+}
+
 // Function to handle IMU data
 function processIMUData(imuData) {
     if (!imuData || !imuData.imu) {
@@ -85,55 +98,18 @@ function processSpecData(specData) {
     }
 }
 
-const mockRoverData = {
-    rover: {
-        posx: 123.45,
-        posy: 678.90,
-        qr_id: 12
+function processTelemetryData(telemetryData) {
+    if (!telemetryData || !telemetryData.telemetry) {
+        console.error('Invalid Telemetry data');
+        return;
     }
-};
 
-const mockSpecData = {
-    spec: {
-        eva1: {
-            name: "martian_rock",
-            id: 101,
-            data: {
-                SiO2: 45,
-                TiO2: 2,
-                Al2O3: 15,
-                FeO: 10,
-                MnO: 0.5,
-                MgO: 7,
-                CaO: 5,
-                K2O: 0.8,
-                P2O3: 0.2,
-                other: 14.5
-            }
-        },
-        eva2: {
-            name: "lunar_soil",
-            id: 102,
-            data: {
-                SiO2: 42,
-                TiO2: 1,
-                Al2O3: 12,
-                FeO: 12,
-                MnO: 0.3,
-                MgO: 8,
-                CaO: 7,
-                K2O: 0.5,
-                P2O3: 0.4,
-                other: 16.3
-            }
-        }
-    }
-};
+    // Accessing the Telemetry data for EVAs
+    const eva1Data = telemetryData.telemetry.eva1;
+    const eva2Data = telemetryData.telemetry.eva2;
 
-console.log('Testing Rover Data Processing:');
-processRoverData(mockRoverData);
+    console.log('EVA 1 Data:', eva1Data);
+    console.log('EVA 2 Data:', eva2Data);
+}
 
-console.log('Testing Spec Data Processing:');
-processSpecData(mockSpecData);
-
-module.exports = {getCurrentIMU, getCurrentRover, getCurrentSpec};
+module.exports = {getCurrentIMU, getCurrentRover, getCurrentSpec, getCurrentTelemetry};
