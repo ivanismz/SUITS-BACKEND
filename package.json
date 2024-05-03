@@ -11,12 +11,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "16": "^0.0.2",
     "axios": "^1.6.8",
     "body-parser": "^1.20.2",
+    "buffer": "^6.0.3",
     "conda": "^0.0.1-a17",
     "express": "^4.19.2",
+    "file-url": "^4.0.0",
     "jimp": "^0.3.11",
     "mongoose": "^8.2.4",
+    "node-blob": "^0.0.2",
     "node-fetch": "^3.3.2",
     "punycode": "^2.3.1",
     "ws": "^8.16.0"

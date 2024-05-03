@@ -4,10 +4,11 @@ const WebSocket = require('ws');
 const axios = require('axios');
 const { handleCommand } = require('./CommandHandler');
 const { getCurrentState } = require('./TaskStateManager');
-
+const Blob = require('node-blob');
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, maxPayload: 10 * 1024 * 1024 }); // 10 MB max payload
+
 
 // wss.on('connection', function connection(ws) {
 //     console.log('Client connected');
@@ -43,6 +44,12 @@ wss.on('connection', function connection(ws) {
                 ws.send(JSON.stringify(response)); 
             }
           });
+          // Check if there is an image input in the data
+          if (inputMessage["image_input"]) {
+            var base64String = inputMessage["image_input"]
+            // sendImageToLMCC(base64String, () => {});
+            // TODO: LMCC side needs to implement this function
+        }
       } catch (error) {
           // If an error occurs, send a JSON object with the error message
           ws.send(JSON.stringify({ error: error.message }));
