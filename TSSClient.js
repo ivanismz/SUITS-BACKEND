@@ -27,14 +27,17 @@ async function getCurrentRover() {
 }
 
 async function getCurrentSpec() {
-    const url = `${TSS_URL}/json_data/SPEC.json`; // Construct the full URL to access SPEC.json
+    const specUrl = `${TSS_URL}/json_data/SPEC.json`; // Construct the full URL to access SPEC.json
+    const rockDataUrl = `${TSS_URL}/json_data/rocks/RockData.json`;
 
     try {
-        const response = await axios.get(url);
-        console.log('Spec Data:', response.data);
-        processSpecData(response.data); // Process the Spec data as needed
+        const specResponse = await axios.get(specRrl);
+        const rockResponse = await axios.get(rockDataUrl);
+        console.log('Spec Data:', specResponse.data);
+        console.log('Standard Rock Data:', rockResponse.data);
+        processSpecData(specResponse.data, rockResponse.data); // Process the Spec data as needed
     } catch (error) {
-        console.error('Failed to fetch Spec data:', error);
+        console.error('Failed to fetch Spec/Rock data:', error);
     }
 }
 
@@ -78,7 +81,7 @@ function processRoverData(roverData) {
 }
 
 // Function to handle Spec data
-function processSpecData(specData) {
+function processSpecData(specData, rockData) {
     if (!specData || !specData.spec) {
         console.error('Invalid Spec data');
         return;
@@ -95,6 +98,36 @@ function processSpecData(specData) {
         console.log('EVA2 Details:', JSON.stringify(specData.spec.eva2, null, 2));
     } else {
         console.error('EVA2 data not found');
+    }
+
+    const specRocks = [specData.spec.eva1, specData.spec.eva2];
+
+    // Iterate through each rock in SPEC.json
+    for (const specRock of specRocks) {
+        // Find a matching rock in RockData.json based on name and id
+        const matchedRock = rockData.ROCKS.find(rock => rock.name === specRock.name && rock.id === specRock.id);
+
+        // If no matching rock is found, log it as abnormal
+        if (!matchedRock) {
+            console.log(`The rock ${specRock.name} with ID ${specRock.id} is abnormal (no match found).`);
+            continue;
+        }
+
+        // Compare data values between the matched rocks
+        let isNormal = true;
+        for (const [key, value] of Object.entries(specRock.data)) {
+            if (matchedRock.data[key] !== value) {
+                isNormal = false;
+                break;
+            }
+        }
+
+        // Log the result for this rock
+        if (isNormal) {
+            console.log(`The rock ${specRock.name} with ID ${specRock.id} is normal.`);
+        } else {
+            console.log(`The rock ${specRock.name} with ID ${specRock.id} is abnormal.`);
+        }
     }
 }
 
