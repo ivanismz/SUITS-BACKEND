@@ -27,16 +27,32 @@ async function getCurrentRover() {
 }
 
 async function getCurrentSpec() {
-    const url = `${TSS_URL}/json_data/SPEC.json`; // Construct the full URL to access SPEC.json
+    const specUrl = `${TSS_URL}/json_data/SPEC.json`; // Construct the full URL to access SPEC.json
+    const rockDataUrl = `${TSS_URL}/json_data/rocks/RockData.json`;
+
+    try {
+        const specResponse = await axios.get(specRrl);
+        const rockResponse = await axios.get(rockDataUrl);
+        console.log('Spec Data:', specResponse.data);
+        console.log('Standard Rock Data:', rockResponse.data);
+        processSpecData(specResponse.data, rockResponse.data); // Process the Spec data as needed
+    } catch (error) {
+        console.error('Failed to fetch Spec/Rock data:', error);
+    }
+}
+
+async function getCurrentTelemetry() {
+    const url = `${TSS_URL}/json_data/teams/10/Telemetry.json`; // Construct the full URL to access Telemetry.json
 
     try {
         const response = await axios.get(url);
-        console.log('Spec Data:', response.data);
-        processSpecData(response.data); // Process the Spec data as needed
+        console.log('Telemetry Data:', response.data);
+        processTelemetryData(response.data); // Process the Telemetry data as needed
     } catch (error) {
-        console.error('Failed to fetch Spec data:', error);
+        console.error('Failed to fetch Telemetry data:', error);
     }
 }
+
 // Function to handle IMU data
 function processIMUData(imuData) {
     if (!imuData || !imuData.imu) {
@@ -65,7 +81,7 @@ function processRoverData(roverData) {
 }
 
 // Function to handle Spec data
-function processSpecData(specData) {
+function processSpecData(specData, rockData) {
     if (!specData || !specData.spec) {
         console.error('Invalid Spec data');
         return;
@@ -83,57 +99,50 @@ function processSpecData(specData) {
     } else {
         console.error('EVA2 data not found');
     }
-}
 
-const mockRoverData = {
-    rover: {
-        posx: 123.45,
-        posy: 678.90,
-        qr_id: 12
-    }
-};
+    const specRocks = [specData.spec.eva1, specData.spec.eva2];
 
-const mockSpecData = {
-    spec: {
-        eva1: {
-            name: "martian_rock",
-            id: 101,
-            data: {
-                SiO2: 45,
-                TiO2: 2,
-                Al2O3: 15,
-                FeO: 10,
-                MnO: 0.5,
-                MgO: 7,
-                CaO: 5,
-                K2O: 0.8,
-                P2O3: 0.2,
-                other: 14.5
-            }
-        },
-        eva2: {
-            name: "lunar_soil",
-            id: 102,
-            data: {
-                SiO2: 42,
-                TiO2: 1,
-                Al2O3: 12,
-                FeO: 12,
-                MnO: 0.3,
-                MgO: 8,
-                CaO: 7,
-                K2O: 0.5,
-                P2O3: 0.4,
-                other: 16.3
+    // Iterate through each rock in SPEC.json
+    for (const specRock of specRocks) {
+        // Find a matching rock in RockData.json based on name and id
+        const matchedRock = rockData.ROCKS.find(rock => rock.name === specRock.name && rock.id === specRock.id);
+
+        // If no matching rock is found, log it as abnormal
+        if (!matchedRock) {
+            console.log(`The rock ${specRock.name} with ID ${specRock.id} is abnormal (no match found).`);
+            continue;
+        }
+
+        // Compare data values between the matched rocks
+        let isNormal = true;
+        for (const [key, value] of Object.entries(specRock.data)) {
+            if (matchedRock.data[key] !== value) {
+                isNormal = false;
+                break;
             }
         }
+
+        // Log the result for this rock
+        if (isNormal) {
+            console.log(`The rock ${specRock.name} with ID ${specRock.id} is normal.`);
+        } else {
+            console.log(`The rock ${specRock.name} with ID ${specRock.id} is abnormal.`);
+        }
     }
-};
+}
 
-console.log('Testing Rover Data Processing:');
-processRoverData(mockRoverData);
+function processTelemetryData(telemetryData) {
+    if (!telemetryData || !telemetryData.telemetry) {
+        console.error('Invalid Telemetry data');
+        return;
+    }
 
-console.log('Testing Spec Data Processing:');
-processSpecData(mockSpecData);
+    // Accessing the Telemetry data for EVAs
+    const eva1Data = telemetryData.telemetry.eva1;
+    const eva2Data = telemetryData.telemetry.eva2;
 
-module.exports = {getCurrentIMU, getCurrentRover, getCurrentSpec};
+    console.log('EVA 1 Data:', eva1Data);
+    console.log('EVA 2 Data:', eva2Data);
+}
+
+module.exports = {getCurrentIMU, getCurrentRover, getCurrentSpec, getCurrentTelemetry};
