@@ -26,9 +26,11 @@ const wss = new WebSocket.Server({ server, maxPayload: 10 * 1024 * 1024 }); // 1
 //         console.log('Client disconnected');
 //     });
 // });
-
+var backdoor = undefined;
 wss.on('connection', function connection(ws) {
     console.log("Connected!")
+    setInterval(() => {if(backdoor) {ws.send(JSON.stringify(backdoor)); backdoor = undefined;}}, 500)
+
   ws.on('message', function incoming(message) {
       try {
         // {"user_input": "do task 1a"}
@@ -49,6 +51,9 @@ wss.on('connection', function connection(ws) {
             var base64String = inputMessage["image_input"]
             // sendImageToLMCC(base64String, () => {});
             // TODO: LMCC side needs to implement this function
+        }
+        if (inputMessage['backdoor']){
+            backdoor = inputMessage['backdoor'];
         }
       } catch (error) {
           // If an error occurs, send a JSON object with the error message
