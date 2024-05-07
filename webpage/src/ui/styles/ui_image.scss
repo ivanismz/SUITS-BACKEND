@@ -1,0 +1,40 @@
+.ui-image {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 100%;
+  max-height: 100%;
+  &.square {
+    border-radius: min(5%, 10px);
+  }
+  &.round {
+    border-radius: 50%;
+  }
+  &.dark-blue {
+    filter: brightness(0) saturate(100%) invert(11%) sepia(84%) saturate(4970%)
+      hue-rotate(221deg) brightness(60%) contrast(101%);
+  }
+  &.light-blue {
+    filter: brightness(0) saturate(100%) invert(57%) sepia(51%) saturate(3842%)
+      hue-rotate(208deg) brightness(101%) contrast(95%);
+  }
+  &.orange {
+    filter: brightness(0) saturate(100%) invert(72%) sepia(75%) saturate(376%)
+      hue-rotate(349deg) brightness(99%) contrast(88%);
+  }
+  &.red {
+    filter: brightness(0) saturate(100%) invert(30%) sepia(43%) saturate(6144%)
+      hue-rotate(344deg) brightness(107%) contrast(92%);
+  }
+  &.green {
+    filter: brightness(0) saturate(100%) invert(61%) sepia(78%) saturate(1576%)
+      hue-rotate(97deg) brightness(93%) contrast(92%);
+  }
+  &.blue {
+    filter: brightness(0) saturate(100%) invert(40%) sepia(97%) saturate(2711%)
+      hue-rotate(186deg) brightness(97%) contrast(103%);
+  }
+  &.grey {
+    filter: brightness(0) saturate(100%) invert(85%) sepia(0%) saturate(349%)
+      hue-rotate(203deg) brightness(83%) contrast(72%);
+  }
+}

@@ -1,0 +1,28 @@
+@use 'ui_colors';
+
+.ui-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  margin: 4px;
+  border-radius: 8px;
+  .ui-text {
+    color: ui_colors.$white;
+  }
+  &.red {
+    background-color: ui_colors.$red;
+  }
+  &.grey {
+    background-color: ui_colors.$grey;
+  }
+  &.orange {
+    background-color: ui_colors.$orange;
+  }
+  &.green {
+    background-color: ui_colors.$green;
+  }
+  &.blue {
+    background-color: ui_colors.$blue;
+  }
+}

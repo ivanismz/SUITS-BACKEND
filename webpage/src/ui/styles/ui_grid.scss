@@ -1,0 +1,36 @@
+.ui-grid {
+  // display: flex;
+  overflow: auto;
+  position: relative;
+
+  & > .gradient-wrapper {
+    height: 100%;
+    overflow-y: hidden;
+
+    & > .inner-wrapper-in-gradient {
+      height: 100%;
+      overflow-y: auto;
+
+      & > .inner {
+        display: inline-flex;
+        height: max-content;
+        width: max-content;
+
+        & > .main-axis {
+          display: flex;
+
+          & > .placeholder-container {
+            display: flex;
+            flex: 1;
+
+            & > * {
+              // display: flex;  // not required!
+              flex: 1;
+            }
+
+          }
+        }
+      }
+    }
+  }
+}

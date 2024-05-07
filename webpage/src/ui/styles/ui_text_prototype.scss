@@ -1,0 +1,70 @@
+@use 'ui_fonts';
+@use 'ui_colors';
+
+.ui-text {
+  display: inline;
+  &.italic {
+    font-style: italic;
+  }
+  &.underscore {
+    text-decoration: underline;
+  }
+  &.h1 {
+    font-family: ui_fonts.$primary;
+    font-size: 32px !important;
+    line-height: 1.5em !important;
+    font-weight: 700 !important;
+    display: block;
+    margin: 0.8em 24px;
+    color: ui_colors.$dark-grey;
+    width: calc(100% - 48px);
+    align-self: center;
+  }
+  &.h2 {
+    font-family: ui_fonts.$secondary;
+    font-size: 28px !important;
+    font-weight: 500 !important;
+    display: block;
+    margin: 0.8em 24px;
+    color: ui_colors.$dark-grey;
+    width: calc(100% - 48px);
+    align-self: center;
+  }
+  &.h3 {
+    font-family: ui_fonts.$secondary;
+    font-size: 24px !important;
+    font-weight: 500 !important;
+    display: block;
+    margin: 0.8em 24px;
+    color: ui_colors.$dark-grey;
+    width: calc(100% - 48px);
+    align-self: center;
+  }
+  &.default,
+  &.secondary {
+    font-size: 16px;
+    font-weight: 400;
+    color: ui_colors.$dark-grey;
+  }
+  &.default {
+    font-family: ui_fonts.$plain;
+  }
+  &.secondary {
+    font-family: ui_fonts.$secondary;
+  }
+  &.bold {
+    font-weight: 600;
+  }
+  &.error-text,
+  &.success-text {
+    font-family: ui_fonts.$plain;
+    font-weight: 400;
+    font-size: 16px;
+  }
+  &.error-text {
+    color: ui_colors.$red;
+  }
+  &.success-text {
+    color: ui_colors.$green;
+  }
+}

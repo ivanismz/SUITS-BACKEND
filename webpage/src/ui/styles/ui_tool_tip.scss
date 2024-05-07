@@ -1,0 +1,49 @@
+@use "ui_fonts";
+@use "ui_colors";
+
+.ui-tool-tip-wrapper {
+  position: relative;
+  .ui-tool-tip-pin {
+    background: ui_colors.$dark-grey;
+    width: 6px;
+    height: 6px;
+    position: absolute;
+    white-space: nowrap;
+    bottom: calc(100% + 1px);
+    left: calc(50% - 3px);
+    transform: rotate(45deg);
+    display: none;
+    z-index: 100;
+  }
+  .ui-tool-tip {
+    display: none;
+    position: absolute;
+    justify-content: center;
+    width: 180px;
+    bottom: calc(100% + 3px);
+    right: calc(50% - 90px);
+    z-index: 100;
+    .ui-tool-tip-message {
+      display: none;
+      background: ui_colors.$dark-grey;
+      border-radius: 4px;
+      color: ui_colors.$white;
+      font-family: ui_fonts.$plain;
+      font-size: 12px;
+      padding: 2px 4px;
+      position: relative;
+      bottom: 0px;
+    }
+  }
+  &:hover {
+    .ui-tool-tip {
+      display: flex;
+      .ui-tool-tip-message {
+        display: inline-flex;
+      }
+    }
+    .ui-tool-tip-pin {
+      display: inherit;
+    }
+  }
+}

@@ -1,0 +1,97 @@
+@use "ui_fonts";
+@use "ui_colors";
+
+.ui-select-wrapper {
+  display: flex;
+  flex-grow: 1;
+  border-radius: 8px;
+  background-color: ui_colors.$light-orange;
+  align-items: center;
+  position: relative;
+  .chosen-container {
+    display: flex;
+    flex: 1;
+    .chosen-single,
+    .chosen-choices {
+      flex: 1;
+      z-index: 1;
+      margin: 0px;
+      align-items: center;
+      border-radius: 8px;
+      border-style: solid;
+      border-width: 1px;
+      outline: none;
+      font-family: ui_fonts.$plain;
+      line-height: 20px;
+      font-size: 12px;
+      border-color: ui_colors.$dark-blue;
+      background: field;
+      transition: all linear 0.2s;
+    }
+    .chosen-single {
+      display: flex;
+    }
+    .chosen-choices {
+      .search-choice {
+        border-radius: 4px;
+        border: 1px solid ui_colors.$grey;
+      }
+    }
+    .chosen-drop {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      z-index: 2;
+      border-color: ui_colors.$dark-blue;
+      border-radius: 0px 0px 8px 8px;
+      .chosen-results {
+        flex: 1;
+        li {
+          font-family: ui_fonts.$plain;
+          &.highlighted {
+            background-color: ui_colors.$dark-blue;
+            color: ui_colors.$white;
+          }
+          &.no-results {
+            color: ui_colors.$grey;
+          }
+        }
+      }
+      .chosen-search {
+        display: flex;
+        input {
+          border-radius: 4px;
+          border: 1px solid ui_colors.$dark-blue;
+          font-family: ui_fonts.$plain;
+          font-size: 12px;
+          line-height: 15px;
+          display: flex;
+        }
+      }
+    }
+    &.chosen-with-drop {
+      .chosen-single,
+      .chosen-choices {
+        border-radius: 8px 8px 0px 0px;
+        box-shadow: 0px 0px 2px ui_colors.$dark-blue;
+      }
+      .chosen-drop {
+        box-shadow: 0px 0px 2px ui_colors.$dark-blue;
+      }
+    }
+  }
+  .ui-select-error {
+    position: absolute;
+    right: 0px;
+    border-radius: 0px 8px 8px 0px;
+    display: flex;
+    justify-content: flex-end;
+    width: 34px;
+    height: 100%;
+    background-color: ui_colors.$light-orange;
+    transition: all linear 0.2s;
+    &.shown {
+      right: -26px;
+    }
+  }
+}

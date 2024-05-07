@@ -1,0 +1,21 @@
+@use 'ui_fonts';
+@use 'ui_colors';
+@use 'ui_text_prototype';
+@use 'ui_link';
+@use 'ui_line_separator';
+@use 'ui_button';
+@use 'ui_image';
+@use 'ui_card';
+@use 'ui_input';
+@use 'ui_tool_tip';
+@use 'ui_radio';
+@use 'ui_file_uploader';
+@use 'ui_select';
+@use 'ui_toast_list';
+@use 'ui_modal';
+@use 'ui_card_group';
+@use 'ui_tag';
+
+.interactive {
+  cursor: pointer;
+}

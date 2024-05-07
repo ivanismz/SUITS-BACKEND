@@ -1,0 +1,32 @@
+@use "ui_fonts";
+@use "ui_colors";
+
+.ui-link {
+  display: inline;
+  font-family: ui_fonts.$secondary;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: all linear 0.2s;
+  &.disabled {
+    color: ui_colors.$light-grey;
+    text-decoration: none;
+  }
+  &.primary {
+    color: ui_colors.$dark-blue;
+    &:hover {
+      color: ui_colors.$blue;
+    }
+    &:active {
+      color: ui_colors.$light-blue;
+    }
+  }
+  &.secondary {
+    color: ui_colors.$dark-orange;
+    &:hover {
+      color: ui_colors.$orange;
+    }
+    &:active {
+      color: ui_colors.$light-orange;
+    }
+  }
+}
