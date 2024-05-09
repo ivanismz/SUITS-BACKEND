@@ -57,7 +57,7 @@ function lmcc_incoming_message(message) {
             }
         }
     } catch (e) {
-        ws.send(JSON.stringify({error: error.message}));
+        console.error(JSON.stringify({error: error.message}));
     }
 }
 
@@ -74,7 +74,7 @@ function hololens_incoming_message(message) {
             }
         }
     }  catch (e) {
-        ws.send(JSON.stringify({ error: error.message }));
+        console.error(JSON.stringify({ error: error.message }));
     }
 }
 
