@@ -35,6 +35,7 @@ type Props = {
   grow?: React.CSSProperties['flexGrow'];
   onChange?: (name: string, value: any) => void;
   onBlur?: () => void;
+  onSubmit?: (value) => void;
   variant?: 'primary' | 'secondary';
 };
 
@@ -52,6 +53,7 @@ function UIKeyboardInput({
   variant = 'primary',
   onChange,
   onBlur,
+  onSubmit,
 }: Props): JSX.Element {
   const [privateValue, setPrivateValue] = useState<string | number | null>(
     null
@@ -138,6 +140,12 @@ function UIKeyboardInput({
       type={type}
       onChange={e => {
         privateOnChange(e)
+      }}
+      onKeyDown={e => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          onSubmit?.(privateValue ?? '')
+        }
       }}
       placeholder={placeholder}
       onBlur={onBlur}

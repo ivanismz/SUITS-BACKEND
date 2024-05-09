@@ -5,11 +5,12 @@ type UICardGroupProps = {
     direction?: 'row' | 'column';
     children: ReactElement<UICardProps | UICardGroupProps> |
     ReactElement<UICardProps | UICardGroupProps>[];
-    style?: React.CSSProperties
+    style?: React.CSSProperties;
+    className?: string;
 }
 
-function UICardGroup({ direction = 'row', children, style } : UICardGroupProps): ReactElement<UICardGroupProps> {
-  return <div className='ui-card-group' style={{ ...style, flexDirection: direction }}>{children}</div>
+function UICardGroup({ direction = 'row', children, style, className } : UICardGroupProps): ReactElement<UICardGroupProps> {
+  return <div className={'ui-card-group ' + (className ?? '')} style={{ ...style, flexDirection: direction }}>{children}</div>
 }
 
 export default UICardGroup

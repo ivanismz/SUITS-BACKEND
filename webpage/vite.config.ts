@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000,  // required by cors of the dev-env aws server
+    port: 4000,  // required by cors of the dev-env aws server
     host: true
   }
 })

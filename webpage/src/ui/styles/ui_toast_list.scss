@@ -1,102 +1,202 @@
-@use "ui_fonts";
-@use "ui_colors";
+@use 'ui_fonts';
+@use 'ui_colors';
+
 
 .ui-toast-list {
-  position: fixed;
-  right: 24px;
-  bottom: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  overflow: hidden;
-  transition: all linear 0.5s;
-  z-index: 101;
+ position: fixed;
+ left: 50%;
+ bottom: calc(8px + env(safe-area-inset-bottom));
+ max-width: 100%;
+ transform: translateX(-50%);
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ overflow: hidden;
+ transition: all linear 0.5s;
+ z-index: 101;
 }
+
 
 .ui-toast-wrapper {
-  overflow: hidden;
-  &.ui-toast-wrapper-collapse {
-    animation-name: fade-out, collapse;
-    animation-duration: 0.3s, 0.2s;
-    animation-delay: 0s, 0.3s;
-  }
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ transition-property: opacity, max-height;
+ transition-duration: 0.5s, 0.2s;
+ transition-delay: 0s, 0.3s;
+ opacity: 1;
+ max-height: 100vh;
+ overflow: hidden;
+ &.ui-toast-wrapper-collapse {
+   opacity: 0;
+   max-height: 0vh;
+ }
 }
 
-@keyframes fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
 
-@keyframes collapse {
-  from {
-    opacity: 0;
-    max-height: 100vh;
-  }
-  to {
-    opacity: 0;
-    max-height: 0vh;
-  }
-}
 .ui-toast {
-  position: relative;
-  display: flex;
-  margin: 4px 8px;
-  border-radius: 8px;
-  overflow: hidden;
-  align-items: center;
-  background: ui_colors.$black;
-  font-family: ui_fonts.$plain;
-  min-height: 44px;
-  font-size: 14px;
-  box-shadow: 0px 0px 4px ui_colors.$dark-grey;
-  .ui-toast-icon {
-    height: 28px;
-    width: 28px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 8px;
-  }
-  .ui-toast-message {
-    margin: 4px 0px;
-    color: ui_colors.$white;
-    width: 250px;
-  }
-  .ui-toast-close {
-    height: 16px;
-    width: 16px;
-    margin: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: flex-start;
-    cursor: pointer;
-  }
-  .ui-toast-button {
-    color: ui_colors.$black;
-    font-weight: 600;
-    padding: 2px 8px;
-    margin: 4px;
-    box-sizing: border-box;
-    border-radius: 8px;
-    border-width: 1px;
-    border-color: ui_colors.$light-grey;
-    box-shadow: inset 0px 0px 4px ui_colors.$light-grey;
-    overflow: hidden;
-    background: ui_colors.$white;
-    cursor: pointer;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all linear 0.2s;
-    &:hover {
-      box-shadow: inset 0px 0px 4px ui_colors.$dark-grey;
-      color: ui_colors.$dark-grey;
-    }
-  }
+ position: relative;
+ display: flex;
+ margin: 6px 8px;
+ border-radius: 4px;
+ align-items: center;
+ justify-content: space-between;
+ background: ui_colors.$blue-dark-transparent;
+ font-family: ui_fonts.$plain;
+ min-height: 36px;
+ width: max-content;
+ max-width: max(60vw, 300px);
+ font-size: 14px;
+ box-shadow: 0px 0px 2px ui_colors.$blue-dark-transparent;
+ &::before,
+ &::after {
+   content: '';
+   position: absolute;
+   top: -3px;
+   background: radial-gradient(
+     ui_colors.$moonlight-dark,
+     80%,
+     ui_colors.$white
+   );
+   height: calc(100% + 6px);
+   width: 10px;
+   clip-path: polygon(
+     5px 0px,
+     10px 0px,
+     10px 3px,
+     6px 3px,
+     3px 6px,
+     3px calc(100% - 6px),
+     6px calc(100% - 3px),
+     10px calc(100% - 3px),
+     10px 100%,
+     5px 100%,
+     0px calc(100% - 5px),
+     0px 5px,
+     5px 0px
+   );
+ }
+ &::before {
+   left: -3px;
+ }
+ &::after {
+   right: -3px;
+   transform: scaleX(-1);
+ }
+ &.success {
+   &::before,
+   &::after {
+     background: radial-gradient(
+       ui_colors.$green,
+       80%,
+       ui_colors.$moonlight-dark
+     );
+   }
+ }
+ &.error {
+   &::before,
+   &::after {
+     background: radial-gradient(ui_colors.$orange-dark, 80%, ui_colors.$red);
+   }
+ }
+ &.info {
+   &::before,
+   &::after {
+     background: radial-gradient(ui_colors.$blue, 80%, ui_colors.$blue-light);
+   }
+ }
+ .ui-toast-icon {
+   height: 28px;
+   width: 28px;
+   display: flex;
+   flex-shrink: 0;
+   justify-content: center;
+   align-items: center;
+   margin: 8px;
+   opacity: 0.8;
+ }
+ .ui-toast-message {
+   min-width: 175px;
+   margin: 4px 4px 4px 16px;
+   color: ui_colors.$white;
+ }
+ .ui-toast-close {
+   height: 16px;
+   width: 16px;
+   margin: 4px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   align-self: flex-start;
+   user-select: none;
+   cursor: pointer;
+ }
+ .ui-toast-button {
+   position: relative;
+   top: -1px;
+   transform: translateY(-5%);
+   color: ui_colors.$moonlight-dark;
+   font-weight: 600;
+   padding: 2px 8px;
+   margin: 0px 4px 0px 16px;
+   box-sizing: border-box;
+   cursor: pointer;
+   user-select: none;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   transition: all linear 0.2s;
+   .ui-toast-button-text {
+     font-family: ui_fonts.$special;
+     z-index: 1;
+   }
+   &::before,
+   &::after {
+     content: '';
+     position: absolute;
+     top: 1px;
+     height: 105%;
+     width: 105%;
+     clip-path: polygon(
+       4px 0,
+       calc(100% - 4px) 0,
+       100% 4px,
+       100% calc(100% - 4px),
+       calc(100% - 4px) 100%,
+       4px 100%,
+       0 calc(100% - 4px),
+       0 4px
+     );
+   }
+   &::before {
+     background: radial-gradient(
+       closest-corner,
+       ui_colors.$moonlight-dark,
+       90%,
+       #fff
+     );
+     transition: all ease-in 0.2s;
+     transform: scale(1.05, 1.05);
+   }
+   &::after {
+     background: ui_colors.$blue-dark;
+     transform: scale(0.94, 0.89);
+     transition-delay: 0.2s;
+   }
+   &:hover {
+     color: ui_colors.$moonlight;
+   }
+   &:active {
+     &::before {
+       background: radial-gradient(
+         closest-corner,
+         ui_colors.$moonlight,
+         90%,
+         #fff
+       );
+     }
+   }
+ }
 }
+
+

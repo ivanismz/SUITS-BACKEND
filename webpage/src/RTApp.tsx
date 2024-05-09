@@ -2,7 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 
 import Demo from './ui/Demo'
 import { GlobalUIModal } from './ui/UIModal'
-import Placeholder from './pages/Placeholder'
+import MainPage from './pages/MainPage'
 import { UIToastList } from './ui/UIToast'
 
 function RTApp() {
@@ -12,7 +12,7 @@ function RTApp() {
       <UIToastList />
 
       <Routes>
-        <Route path='/' element={<Placeholder />} />
+        <Route path='/' element={<MainPage />} />
 
         {process.env.NODE_ENV === 'production' ? null : (
           <Route path='/demo' element={<Demo />} />

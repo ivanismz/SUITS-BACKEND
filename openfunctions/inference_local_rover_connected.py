@@ -147,7 +147,7 @@ pipe = initialize_pipe()
 server_communication_init()
 run_server()
 
-current_menu = "rover"
+current_menu = "egress"
     
 
 while True: 

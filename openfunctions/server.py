@@ -9,6 +9,13 @@ class RequestHandler(BaseHTTPRequestHandler):
    def __init__(self, request, client_address, server) -> None:
        super().__init__(request, client_address, server)
 
+   def do_OPTIONS(self):
+        self.send_response(200)
+        # self.send_header('Content-Type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header("Access-Control-Allow-Headers", "*")
+        self.end_headers()
+        # self.wfile.write(json.dumps(output).encode())
    def do_POST(self):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
@@ -22,7 +29,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         #     self.end_headers()
         #     self.wfile.write(json.dumps({}).encode())
         #     return
-            
+        print(post_data)
         user_input = post_data["user_input"]
         put_server_input(user_input)
         response_msg = get_llm_response()
@@ -36,6 +43,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         self.send_response(200)
         self.send_header('content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         self.wfile.write(json.dumps(output).encode())
         

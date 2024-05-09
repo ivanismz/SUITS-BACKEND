@@ -16,7 +16,9 @@
   overflow: hidden;
   > .ui-card {
     flex-grow: 1;
-    border-width: 0.5px;
+    border-width: 0px;
+    border-bottom-width: 0.5px;
+    border-right-width: 0.5px;
     box-shadow: none;
     border-radius: 0px;
     margin: 0px;
