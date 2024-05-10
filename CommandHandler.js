@@ -3,6 +3,7 @@ const ingressTasks = require('./ingressTasks');
 const equipmentDiagnosisTasks = require('./equipmentDiagnosisTasks');
 const navigationTasks = require('./navigationTasks');
 const biomedicalTasks = require('./biomedicalTasks');
+const geoSampling = require('./geoSampling');
 const taskStateManager = require('./TaskStateManager');
 
 
@@ -109,7 +110,9 @@ const taskMap = {
     "on_suits_get_temperature": biomedicalTasks.onSuitsGetTemperature,
     "on_suits_get_coolant_pressure": biomedicalTasks.onSuitsGetCoolantPressure,
     "show_my_suits_data": biomedicalTasks.showMySuitsData,
-    "show_partner_suits_data": biomedicalTasks.showPartnerSuitsData
+    "show_partner_suits_data": biomedicalTasks.showPartnerSuitsData,
+    "on_geosampling_menu_start": geoSampling.onGeosamplingMenuStart,
+    "on_geosampling_menu_check_current_rock_HMD": geoSampling.onGeosamplingMenuCheckCurrentRock
 };
 
 async function handleCommand(commandObject) {
