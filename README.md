@@ -9,8 +9,10 @@
      
 3. install npm
    
-### To run LLM with quick command line input:
+### To run LLM with rover control:
 run `local_inference_backend.py`, input the user query and the function call will be printed out, type "quit" to exit 
+
+make sure laptop running this script is connected to the rover wifi
 
 ### To run LLM with user query provided by backend server (full backend --> LLM --> backend workflow):
 1. run `local_inference_backend_connected.py`, the LLM will start a server on  `localhost:8000`
