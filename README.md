@@ -8,6 +8,8 @@
       `git clone https://github.com/tree-sitter/tree-sitter-javascript.git`
      
 3. install npm
+
+LLM related code are located in the `openfunctions` directory, so do `cd openfunctions`
    
 ### To run LLM with rover control:
 run `local_inference_backend.py`, input the user query and the function call will be printed out, type "quit" to exit 
