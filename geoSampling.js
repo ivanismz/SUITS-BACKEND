@@ -4,7 +4,7 @@ function onGeosamplingMenuStart() {
     return {
       function: "on_geosampling_menu_start_HMD",
       parameter: {
-        display_string: "Perform Geologic Sampling by scanning rocks. After scanning each rock, say 'Ursa, check current rock'."
+        display_string: "Perform Geological Sampling by scanning rocks. After scanning each rock, say 'Ursa, check current rock'."
       }
     };
   }
