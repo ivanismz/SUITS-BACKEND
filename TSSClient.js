@@ -27,18 +27,30 @@ async function getCurrentRover() {
 }
 
 async function getCurrentSpec() {
+
     const specUrl = `${TSS_URL}/json_data/SPEC.json`; // Construct the full URL to access SPEC.json
     const rockDataUrl = `${TSS_URL}/json_data/rocks/RockData.json`;
 
     try {
-        const specResponse = await axios.get(specRrl);
+        const specResponse = await axios.get(specUrl);
         const rockResponse = await axios.get(rockDataUrl);
         console.log('Spec Data:', specResponse.data);
         console.log('Standard Rock Data:', rockResponse.data);
-        processSpecData(specResponse.data, rockResponse.data); // Process the Spec data as needed
+        return processSpecData(specResponse.data.spec, rockResponse.data.ROCKS); // Return the results directly
     } catch (error) {
         console.error('Failed to fetch Spec/Rock data:', error);
-    }
+        return []; // Return an empty array in case of error
+    }    
+
+    // Used for local testing 
+    // try {
+    //     const specData = JSON.parse(fs.readFileSync(path.join(__dirname, 'SPECcopy.json'), 'utf8'));
+    //     const rockData = JSON.parse(fs.readFileSync(path.join(__dirname, 'RockDatacopy.json'), 'utf8'));
+    //     return processSpecData(specData.spec, rockData.ROCKS);
+    // } catch (error) {
+    //     console.error('Error reading local Spec/Rock data:', error);
+    //     return [];
+    // }
 }
 
 async function getCurrentTelemetry() {
@@ -80,55 +92,43 @@ function processRoverData(roverData) {
     console.log('Rover QR ID:', roverData.rover.qr_id);
 }
 
-// Function to handle Spec data
-function processSpecData(specData, rockData) {
-    if (!specData || !specData.spec) {
-        console.error('Invalid Spec data');
-        return;
-    }
+// Compare and log rock status
+function processSpecData(spec, rocks) {
+    const specRocks = [spec.eva1, spec.eva2];
+    let results = []; // Initialize an array to store the results
 
-    if (specData.spec.eva1) {
-        console.log('EVA1 Details:', JSON.stringify(specData.spec.eva1, null, 2));
-    } else {
-        console.error('EVA1 data not found');
-    }
-
-    // Print EVA2 details
-    if (specData.spec.eva2) {
-        console.log('EVA2 Details:', JSON.stringify(specData.spec.eva2, null, 2));
-    } else {
-        console.error('EVA2 data not found');
-    }
-
-    const specRocks = [specData.spec.eva1, specData.spec.eva2];
-
-    // Iterate through each rock in SPEC.json
     for (const specRock of specRocks) {
-        // Find a matching rock in RockData.json based on name and id
-        const matchedRock = rockData.ROCKS.find(rock => rock.name === specRock.name && rock.id === specRock.id);
+        const matchedRock = rocks.find(rock => rock.name === specRock.name && rock.id === specRock.id);
+        let result = {
+            rock_normal: false,
+            display_string: '',
+            data: {
+                name: specRock.name,
+                id: specRock.id,
+                composition: specRock.data
+            }
+        };
 
-        // If no matching rock is found, log it as abnormal
         if (!matchedRock) {
-            console.log(`The rock ${specRock.name} with ID ${specRock.id} is abnormal (no match found).`);
-            continue;
-        }
-
-        // Compare data values between the matched rocks
-        let isNormal = true;
-        for (const [key, value] of Object.entries(specRock.data)) {
-            if (matchedRock.data[key] !== value) {
-                isNormal = false;
-                break;
+            result.display_string = `The rock's name is ${specRock.name}, id is ${specRock.id}, it is not a normal rock. You may want to say “Ursa, drop a pin here” to mark the current location.`;
+        } else {
+            let isNormal = true;
+            for (const [key, value] of Object.entries(specRock.data)) {
+                if (matchedRock.data[key] !== value) {
+                    isNormal = false;
+                    break;
+                }
+            }
+            if (isNormal) {
+                result.rock_normal = true;
+                result.display_string = `The rock's name is ${specRock.name}, id is ${specRock.id}, it is a normal rock, keep searching.`;
+            } else {
+                result.display_string = `The rock's name is ${specRock.name}, id is ${specRock.id}, it is not a normal rock. You may want to say “Ursa, drop a pin here” to mark the current location.`;
             }
         }
-
-        // Log the result for this rock
-        if (isNormal) {
-            console.log(`The rock ${specRock.name} with ID ${specRock.id} is normal.`);
-        } else {
-            console.log(`The rock ${specRock.name} with ID ${specRock.id} is abnormal.`);
-        }
+        results.push(result); // Add the result to the results array
     }
+    return results; // Return the array of results
 }
 
 function processTelemetryData(telemetryData) {
