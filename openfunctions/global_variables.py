@@ -8,6 +8,7 @@ def server_communication_init():
     server_input_queue = queue.Queue()
 
 def put_llm_response(response_msg):
+    print("Putting response:", response_msg)
     llm_response_queue.put(response_msg)
 
 def put_server_input(input_msg):

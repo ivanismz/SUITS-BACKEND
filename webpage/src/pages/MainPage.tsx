@@ -49,7 +49,7 @@ function MainPage() {
   const onSubmitLLM = useCallback((value) => {
     if (!value) return
     console.log(`Submitted: ${value}`);
-    sendUserInputToLLM({user_input: "user_input"}, async (state, message, data, error)=> {
+    sendUserInputToLLM({user_input: `${value}`}, async (state, message, data, error)=> {
       if(state) {
           console.log(data);
           const commandObject = data["llm_response"];

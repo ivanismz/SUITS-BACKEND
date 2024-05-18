@@ -29,7 +29,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         #     self.end_headers()
         #     self.wfile.write(json.dumps({}).encode())
         #     return
-        print(post_data)
+        print("post data is in server.py", post_data)
         user_input = post_data["user_input"]
         put_server_input(user_input)
         response_msg = get_llm_response()
@@ -40,7 +40,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         output = {
             "llm_response": response_msg
         }
-
+        print("sending output", output)
         self.send_response(200)
         self.send_header('content-type', 'application/json')
         self.send_header('Access-Control-Allow-Origin', '*')

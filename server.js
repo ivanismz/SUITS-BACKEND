@@ -17,6 +17,7 @@ const connections = {
 // var backdoor = undefined;
 
 wss.on('connection', function connection(ws) {
+    console.log("Connecting....")
     ws.on('message', function incoming(message) {
         try {
             const inputMessage = JSON.parse(message);

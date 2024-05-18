@@ -4,6 +4,7 @@ const equipmentDiagnosisTasks = require('./equipmentDiagnosisTasks');
 const navigationTasks = require('./navigationTasks');
 const biomedicalTasks = require('./biomedicalTasks');
 const taskStateManager = require('./TaskStateManager');
+const errorTasks = require('./errorTasks');
 
 
 const taskMap = {
@@ -109,7 +110,8 @@ const taskMap = {
     "on_suits_get_temperature": biomedicalTasks.onSuitsGetTemperature,
     "on_suits_get_coolant_pressure": biomedicalTasks.onSuitsGetCoolantPressure,
     "show_my_suits_data": biomedicalTasks.showMySuitsData,
-    "show_partner_suits_data": biomedicalTasks.showPartnerSuitsData
+    "show_partner_suits_data": biomedicalTasks.showPartnerSuitsData,
+    "incorrect_function_call": errorTasks.incorrectFunctionCall
 };
 
 async function handleCommand(commandObject) {
