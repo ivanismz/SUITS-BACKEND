@@ -16,6 +16,10 @@ const connections = {
     "lmcc_conn": undefined,
 }
 
+app.use(express.json());
+const dbURI = process.env.MONGODB_URI;
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+
 // var backdoor = undefined;
 
 wss.on('connection', function connection(ws) {
@@ -168,6 +172,7 @@ app.post('/api/set-eva', (req, res) => {
     }
 });
 
-server.listen(3000, '0.0.0.0', () => {
-    console.log('Server listening on http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server listening on http://localhost:${PORT}`);
 });
