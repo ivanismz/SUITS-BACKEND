@@ -9,6 +9,8 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, maxPayload: 10 * 1024 * 1024 }); // 10 MB max payload
 
+let currentEva = 'eva1';  // Default to 'eva1'. This can be changed via an endpoint.
+
 const connections = {
     "hololens_conn": undefined,
     "lmcc_conn": undefined,
@@ -153,6 +155,17 @@ function sendUserInputToLLM(inputMessage, callback){
 // HTTP endpoint to get current task state
 app.get('/api/task-state', (req, res) => {
     res.json(getCurrentState());
+});
+
+// Endpoint to set the current EVA
+app.post('/api/set-eva', (req, res) => {
+    const { eva } = req.body;
+    if (eva === 'eva1' || eva === 'eva2') {
+        currentEva = eva;
+        res.status(200).send(`Current EVA set to ${eva}`);
+    } else {
+        res.status(400).send('Invalid EVA. Use "eva1" or "eva2".');
+    }
 });
 
 server.listen(3000, '0.0.0.0', () => {

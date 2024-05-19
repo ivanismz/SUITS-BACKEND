@@ -1,234 +1,355 @@
-const Jimp = require('jimp');
-const fs = require('fs');
-const punycode = require('punycode/');
-// const { getCurrentIMU } = require('./TSSClient');
+const { on } = require('ws');
+const { getCurrentTelemetry } = require('./TSSClient');
+const { currentEva } = require('./server');
 
-const mapImagePath = './images/map_no_icons.png';
-const homeIconPath = './images/home_icon.png';
-const roverIconPath = './images/rover_icon.png';
-const pinIconPath = './images/pin_icon.png';
-const currentLocationIconPath = './images/current_location_icon.png';
-const stationIconPath = './images/station_icon.png';
+function onSuitsGetIncorrectRequest() {
+    return {
+        function: "on_suits_get_incorrect_request_HMD",
+        parameter: {
+            display_string: "incorrect data request, please refine your question"
+        }
+    };
+}
 
-let stations = {
-    'Station A': { posx: 150, posy: 500 }, 
-    'Station B': { posx: 300, posy: 250 }, 
-    'Station C': { posx: 500, posy: 100 }, 
-    'Station D': { posx: 600, posy: 240 }, 
-    'Home': { posx: 380, posy: 500}
-  };
-  
+async function onSuitsOpenMySuit() {
+    const telemetryData = await getCurrentTelemetry();
+    return {
+        function: "on_suits_open_my_suit_HMD",
+        parameter: {
+            display_string: JSON.stringify(telemetryData.telemetry[currentEva], null, 2)
+        }
+    };
+}
 
-let pins = {
-'1': { posx: 30, posy: 50 },
-'2': { posx: 120, posy: 220 }
+async function onSuitsGetTimeLeft(params) {
+    const { data_type: type } = params;
+    if (type !== "battery" && type !== "oxygen") {
+        return onSuitsGetIncorrectRequest();
+    }
+    const telemetryData = await getCurrentTelemetry();
+    let timeLeft;
+    let min;
+    let max;
+    let responseFunction;
+
+    if (type === "battery") {
+        timeLeft = telemetryData.telemetry[currentEva].batt_time_left;
+        min = 3600; // Normal range threshold for battery time left
+        max = 10800;
+        responseFunction = "On_suits_get_battery_time_left_HMD"; 
+    } else if (type === "oxygen") {
+        timeLeft = telemetryData.telemetry[currentEva].oxy_time_left;
+        min = 3600; // Adjust if different normal range for oxygen
+        max = 21600;
+        responseFunction = "On_suits_get_oxygen_time_left_HMD";
+    }
+    const isWithinNormalRange = (timeLeft > min && timeLeft < max);
+
+    const displayMessage = `The current ${type} time left is ${timeLeft} seconds, ` +
+        `${isWithinNormalRange ? "it is within the normal range" : "it is NOT within the normal range"}`;
+    
+    return {
+        function: responseFunction,
+        parameter: {
+            display_string: displayMessage
+        },
+        alert: !isWithinNormalRange
+    };
+}
+
+async function onSuitsGetOxygenStorage(params) {
+    const { data_type: type } = params;
+    if (type !== "primary" && type !== "secondary") {
+        return onSuitsGetIncorrectRequest();
+    }
+
+    const telemetryData = await getCurrentTelemetry();
+    let storageValue;
+    let min;
+    let max;
+    let responseFunction;
+
+    if (type === "primary") {
+        storageValue = telemetryData.telemetry[currentEva].oxy_pri_storage;
+        min = 20; 
+        max = 100;
+        responseFunction = "on_suits_get_primary_oxygen_storage_HMD";
+    } else if (type === "secondary") {
+        storageValue = telemetryData.telemetry[currentEva].oxy_sec_storage;
+        min = 20; 
+        max = 100;
+        responseFunction = "on_suits_get_secondary_oxygen_storage_HMD";
+    }
+    const isWithinNormalRange = (storageValue > min && storageValue < max);
+
+    return {
+        function: `On_suits_get_${type}_oxygen_storage_HMD`,
+        parameter: {
+            display_string: `The current ${type} oxygen storage is ${storageValue} percent, it is ${isWithinNormalRange ? "within" : "NOT within"} the normal range`
+        },
+        alert: !isWithinNormalRange
+    };
+}
+
+async function onSuitsGetOxygenConsumption() {
+    const telemetryData = await getCurrentTelemetry();
+    const oxy = telemetryData.telemetry[currentEva].oxy_consumption;
+
+    return {
+        function: "on_suits_get_oxygen_consumption_HMD",
+        parameter: {
+            display_string: `The current oxygen consumption is ${oxy} psi/min`
+        }
+    };
+}
+
+async function onSuitsGetMyHeartRate() {
+    const telemetryData = await getCurrentTelemetry();
+    const heartRate = telemetryData.telemetry[currentEva].heart_rate;  // Assuming eva1 is the current suit
+    const normalMin = 50;  // Normal minimum heart rate
+    const normalMax = 160; // Normal maximum heart rate
+    const isWithinNormalRange = heartRate > normalMin && heartRate < normalMax;
+
+    const displayMessage = `The current heart rate is ${heartRate} BPM, ` +
+        `${isWithinNormalRange ? "it is within the normal range" : "it is NOT within the normal range, please slow down for a second"}`;
+    
+    return {
+        function: "on_suits_get_my_heart_rate_HMD",
+        parameter: {
+            display_string: displayMessage
+        },
+        alert: !isWithinNormalRange
+    };
+}
+
+const normalPressureRanges = {
+    oxygen: { min: 2.5, max: 3.5 },
+    co2: { min: 0.01, max: 0.05 },
+    other: { min: 11.0, max: 12.0 },
+    total: { min: 14.0, max: 15.0 }
 };
 
-  const testIMUData = {
-    eva1: { posx: 200, posy: 200, heading: 90 },
-    eva2: { posx: 300, posy: 300, heading: 180 }
-  };  
-
-  const testROVERData = {
-    rover: {
-      posx: 270,
-      posy: 478.90,
-      qr_id: 12
-    }
-  };
-
-  // Mock the getCurrentIMU to use test data
-async function getCurrentIMU() {
-    return new Promise(resolve => resolve(testIMUData));
-  }
-  
-async function getCurrentRover() {
-return new Promise(resolve => resolve(testROVERData));
-}
-
-// Constants for map scaling - these would be specific to your map's coordinate system
-const xScale = 1; // Scale factor for the x-coordinate from IMU to map units
-const yScale = 1; // Scale factor for the y-coordinate from IMU to map units
-const xOffset = 0; // Offset for the x-coordinate to align with the map's origin
-const yOffset = 0; // Offset for the y-coordinate to align with the map's origin
-
-function convertGPSto2D(Data) {
-  // Convert IMU positions (posx, posy) to map coordinates
-  const mapX = Data.posx * xScale + xOffset;
-  const mapY = Data.posy * yScale + yOffset;
-  return {
-    posx: mapX,
-    posy: mapY
-  };
-}
-
-async function overlayIconAndLabel(map, iconPath, position, label, includeLabel = true) {
-    const icon = await Jimp.read(iconPath);
-    map.composite(icon, position.posx - icon.getWidth() / 2, position.posy - icon.getHeight() / 2);
-  
-    if (includeLabel && label) {
-      const font = await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE);
-      const textWidth = Jimp.measureText(font, label);
-      // Define textHeight based on the font height
-      const textHeight = Jimp.measureTextHeight(font, label);
-      // Padding below the icon to the bottom left corner of the text
-      const textPadding = 10; 
-      const labelX = position.posx - textWidth / 2;
-      const labelY = position.posy + icon.getHeight() / 3 + textPadding;
-  
-      // Create a mask to paint the text onto
-      const textMask = new Jimp(textWidth, textHeight, 0x00000000);
-      // Print the label onto the mask
-      await textMask.print(font, 0, 0, label);
-  
-      // Define the bright green color
-      const brightGreen = { r: 0, g: 255, b: 0 };
-  
-      // Change the color of the label to bright green on the mask
-      textMask.scan(0, 0, textWidth, textHeight, function (posx, posy, idx) {
-        // If the pixel is not completely transparent (i.e., is part of the text)
-        if (this.bitmap.data[idx + 3] > 0) {
-          this.bitmap.data[idx + 0] = brightGreen.r;
-          this.bitmap.data[idx + 1] = brightGreen.g;
-          this.bitmap.data[idx + 2] = brightGreen.b;
-        }
-      });
-  
-      // Composite the colored text mask onto the map
-      map.composite(textMask, labelX, labelY);
-    }
-  }
-  
-// Function to open the map and update with current GPS info, pins, and stations
-
-async function onNavigationOpenMap() {
-  try {
-    console.log('Fetching IMU and Rover data...');
-    const imuData = await getCurrentIMU();
-    const roverData = await getCurrentRover();
-    console.log('Loading base map image...');
-    const map = await Jimp.read(mapImagePath);
-
-    console.log('Processing Home position...');
-    const homePosition = stations['Home'];
-    await overlayIconAndLabel(map, homeIconPath, homePosition, 'Home');
-    delete stations['Home']; // Clean up if not needed further
-
-    console.log('Overlaying stations...');
-    for (const [label, position] of Object.entries(stations)) {
-      await overlayIconAndLabel(map, stationIconPath, position, label);
+async function onSuitsGetPressureData(params) {
+    const { data_type: type } = params;
+    if (!["oxy", "primary", "secondary", "co2", "other", "total"].includes(type)) {
+        return onSuitsGetIncorrectRequest();
     }
 
-    console.log('Overlaying Rover...');
-    const roverPosition = convertGPSto2D(roverData.rover);
-    await overlayIconAndLabel(map, roverIconPath, roverPosition, 'Rover');
+    const telemetryData = await getCurrentTelemetry();
+    let pressureValue;
+    let min, max;
+    let responseFunction;
 
-    console.log('Overlaying Pins...');
-    for (const [pinLabel, pinData] of Object.entries(pins)) {
-      const pinPosition = convertGPSto2D(pinData);
-      await overlayIconAndLabel(map, pinIconPath, pinPosition, `Pin ${pinLabel}`);
+    switch (type) {
+        case "primary":
+            pressureValue = telemetryData.telemetry[currentEva].oxy_pri_pressure;
+            min = 600; max = 3000;
+            responseFunction = "on_suits_get_primary_oxygen_pressure_HMD";
+            break;
+        case "secondary":
+            pressureValue = telemetryData.telemetry[currentEva].oxy_sec_pressure;
+            min = 600; max = 3000;
+            responseFunction = "on_suits_get_secondary_oxygen_pressure_HMD";
+            break;
+        case "oxy":
+            pressureValue = telemetryData.telemetry[currentEva].suit_pressure_oxy;
+            min = 3.5; max = 4.1;
+            responseFunction = "on_suits_get_oxygen_pressure_HMD";
+            break;
+        case "co2":
+            pressureValue = telemetryData.telemetry[currentEva].suit_pressure_co2;
+            min = 0; max = 0.1;
+            responseFunction = "on_suits_get_co2_pressure_HMD";
+            break;
+        case "other":
+            pressureValue = telemetryData.telemetry[currentEva].suit_pressure_other;
+            min = 0; max = 0.5;
+            responseFunction = "on_suits_get_other_pressure_HMD";
+            break;
+        case "total":
+            pressureValue = telemetryData.telemetry[currentEva].suit_pressure_total;
+            min = 3.5; max = 4.5;
+            responseFunction = "on_suits_get_total_pressure_HMD";
+            break;
     }
 
-    console.log('Overlaying EVA locations...');
-    for (const [evaLabel, evaData] of Object.entries(imuData)) {
-      const evaPosition = convertGPSto2D(evaData);
-      await overlayIconAndLabel(map, currentLocationIconPath, evaPosition, evaLabel, evaLabel !== 'eva1');
-    }
+    const isWithinNormalRange = (pressureValue >= min && pressureValue <= max);
+    const displayMessage = `The current ${type.replace(/_/g, " ")} pressure is ${pressureValue} psi, ` +
+        `${isWithinNormalRange ? "it is within the normal range" : "it is NOT within the normal range"}`;
 
-    console.log('Generating image buffer...');
-    const mapBuffer = await map.getBufferAsync(Jimp.MIME_PNG);
-    const mapBase64 = mapBuffer.toString('base64');
-    fs.writeFileSync('final_map.png', mapBuffer);  // Optionally save for debugging
-    console.log('base64 conversion success buffer generated, length:', mapBase64.length);
-      return {
-        function: "on_navigation_open_map_HMD",
-          parameter: {
-            image: `data:image/png;base64,${mapBase64}`,
-            display_string: "Map has been opened"
-        }
-      };
-  } catch (error) {
-    console.error('Error during map generation:', error);
-    return { error: error.message };
-  }
-}
-
-
-
-  function onNavigationCloseMap() {
     return {
-        function: "on_navigation_close_map_HMD",
+        function: responseFunction,
         parameter: {
-          display_string: "Map closed"
-        }
-      };
-    }
-
-// Function to remove a pin from the map
-async function onNavigationRemovePin(pinNumber) {
-  pinNumber = pinNumber['pin_number'];
-  const pinKey = pinNumber.toString();
-  if (pins[pinKey]) {
-    delete pins[pinKey];
-    // await on_navigation_open_map();
-    await onNavigationOpenMap();
-    return {
-        function: "on_navigation_remove_pin_HMD",
-        parameter: {
-          display_string: `Pin ${pinNumber} has been removed!`
-        }
-      };
-  }
-  else{
-    return {
-      function: "on_navigation_remove_pin_HMD",
-      parameter: {
-        display_string: `Pin ${pinNumber} has not been added, please try again with a different pin number`
-      }
+            display_string: displayMessage
+        },
+        alert: !isWithinNormalRange
     };
-  }
 }
 
-// Function to add a pin for the current location
-async function onNavigationPinMyLocation(pinNumber) {
-    const imuData = await getCurrentIMU();
-    if (!imuData.eva1 || imuData.eva1.posx === undefined || imuData.eva1.posy === undefined) {
-      console.error("Invalid IMU data:", imuData.eva1);
-      return;
-    }const currentLocation = convertGPSto2D(imuData.eva1);
-
-    // If no pin number is provided, find the next available spot
-    if (pinNumber === undefined) {
-        let nextPinNumber = 1;
-        while (pins[nextPinNumber.toString()] !== undefined) {
-            nextPinNumber++;
-        }
-        pinNumber = nextPinNumber;
-    }
-    else {
-      pinNumber = pinNumber['pin_number'];
+async function onSuitsGetFanRatePerMinute(params) {
+    const { data_type: type } = params;
+    if (type !== "primary" && type !== "secondary") {
+        return onSuitsGetIncorrectRequest();
     }
 
-    const pinKey = pinNumber.toString();
-    pins[pinKey] = currentLocation;
-  
-    // await on_navigation_open_map();
-    await onNavigationOpenMap();
+    const telemetryData = await getCurrentTelemetry();
+    let fanValue;
+    let min;
+    let max;
+    let responseFunction;
+
+    if (type === "primary") {
+        fanValue = telemetryData.telemetry[currentEva].fan_pri_rpm;
+        min = 20000; 
+        max = 30000;
+        responseFunction = "on_suits_get_primary_fan_rate_per_minute_HMD";
+    } else if (type === "secondary") {
+        fanValue = telemetryData.telemetry[currentEva].fan_sec_rpm;
+        min = 20000; 
+        max = 30000;
+        responseFunction = "on_suits_get_secondary_fan_rate_per_minute_HMD";
+    }
+    const isWithinNormalRange = (fanValue > min && fanValue < max);
+   
     return {
-        function: "on_navigation_pin_my_location_HMD",
+        function: responseFunction,
         parameter: {
-          display_string: `Your location has been added as a Pin ${pinNumber}`
-        }
-      };
-  }
-  
-function onNavigationReturnToAirlock() {
+            display_string: `${type} Fan RPM: ${fanValue}. Status: ` +
+            `${isWithinNormalRange ? "Within normal range." : "Out of range! Please check immediately."}`
+        },
+        alert: !isWithinNormalRange
+    };
+}
+
+async function onSuitsGetHelmetPressureCO2() {
+    const telemetryData = await getCurrentTelemetry();
+    const helmetCO2Pressure = telemetryData.telemetry[currentEva].helmet_pressure_co2;
+    const min = 0.0;
+    const max = 0.15;
+
+    const isWithinRange = helmetCO2Pressure >= min && helmetCO2Pressure <= max;
+    const responseFunction = "on_suits_get_helmet_pressure_co2_HMD";
+
     return {
-        function: "on_navigation_return_to_airlock_HMD",
+        function: responseFunction,
         parameter: {
-          display_string: ""
-        }
-      };
+            display_string: `The current helmet CO2 pressure is ${helmetCO2Pressure} psi, it is ${isWithinRange ? "within" : "NOT within"} the normal range.`
+        },
+        alert: !isWithinRange
+    };
+}
+
+// Functions for checking CO2 scrubber storage A and B
+async function onSuitsGetScrubberCO2Storage(params) {
+    const { data_type: scrubberId } = params;
+    const telemetryData = await getCurrentTelemetry();
+    const storage = scrubberId === 'A' ? telemetryData.telemetry[currentEva].scrubber_a_co2_storage : telemetryData.telemetry[currentEva].scrubber_b_co2_storage;
+    const min = 0;
+    const max = 60;
+
+    const isWithinRange = storage >= min && storage <= max;
+    const responseFunction = `on_suits_get_${scrubberId}_scrubber_co2_storage_HMD`;
+    
+    return {
+        function: responseFunction,
+        parameter: {
+            display_string: `The CO2 storage in Scrubber ${scrubberId} is ${storage}%, it is ${isWithinRange ? "within" : "NOT within"} the normal range.`
+        },
+        alert: !isWithinRange
+    };
+}
+
+// Function for checking temperature inside the suit
+async function onSuitsGetTemperature() {
+    const telemetryData = await getCurrentTelemetry();
+    const temperature = telemetryData.telemetry[currentEva].temperature;
+    const min = 50;
+    const max = 90;
+
+    const isWithinRange = temperature >= min && temperature <= max;
+    const responseFunction = "on_suits_get_temperature_HMD";
+
+    return {
+        function: responseFunction,
+        parameter: {
+            display_string: `The current suit temperature is ${temperature}°F, it is ${isWithinRange ? "within" : "NOT within"} the normal range.`
+        },
+        alert: !isWithinRange
+    };
+}
+
+// Functions for checking coolant pressures
+async function onSuitsGetCoolantPressure(params) {
+    const { data_type: type } = params;
+    const telemetryData = await getCurrentTelemetry();
+    let pressure;
+    let min, max;
+    let responseFunction;
+
+    if (type === 'liquid') {
+        pressure = telemetryData.telemetry[currentEva].coolant_liquid_pressure;
+        min = 100;
+        max = 700;
+        responseFunction = "on_suits_get_liquid_coolant_pressure_HMD";
+    } else if (type === 'gas') {
+        pressure = telemetryData.telemetry[currentEva].coolant_gas_pressure;
+        min = 0;
+        max = 700;
+        responseFunction = "on_suits_get_gas_coolant_pressure_HMD";
     }
 
-module.exports = { onNavigationOpenMap, onNavigationRemovePin, onNavigationPinMyLocation, onNavigationReturnToAirlock, onNavigationCloseMap };
+    const isWithinRange = pressure >= min && pressure <= max;
+
+    return {
+        function: responseFunction,
+        parameter: {
+            display_string: `The current ${type} coolant pressure is ${pressure} psi, it is ${isWithinRange ? "within" : "NOT within"} the normal range.`
+        },
+        alert: !isWithinRange
+    };
+}
+
+async function showMySuitsData() {
+    const telemetryData = await getCurrentTelemetry();
+    if (!telemetryData) {
+        return {
+            function: "display_error_HMD",
+            parameter: {
+                display_string: "Failed to retrieve suit data."
+            }
+        };
+    }
+
+    const mySuitData = telemetryData.telemetry[currentEva];
+
+    return {
+        function: "display_my_suit_data_HMD",
+        parameter: {
+            display_string: JSON.stringify(mySuitData, null, 2)
+        }
+    };
+}
+
+// Function to show partner's suit data
+async function showPartnerSuitsData() {
+    const telemetryData = await getCurrentTelemetry();
+    if (!telemetryData) {
+        return {
+            function: "display_error_HMD",
+            parameter: {
+                display_string: "Failed to retrieve partner's suit data."
+            }
+        };
+    }
+
+    const partnerSuitData = telemetryData.telemetry[currentEva === 'eva1' ? 'eva2' : 'eva1'];
+
+    return {
+        function: "display_partner_suit_data_HMD",
+        parameter: {
+            display_string: JSON.stringify(partnerSuitData, null, 2)
+        }
+    };
+}
+
+module.exports = { onSuitsGetIncorrectRequest, onSuitsOpenMySuit, onSuitsGetTimeLeft, onSuitsGetOxygenStorage, onSuitsGetOxygenConsumption, onSuitsGetMyHeartRate, onSuitsGetPressureData, onSuitsGetFanRatePerMinute, onSuitsGetHelmetPressureCO2, onSuitsGetScrubberCO2Storage, onSuitsGetTemperature, onSuitsGetCoolantPressure, showMySuitsData, showPartnerSuitsData};

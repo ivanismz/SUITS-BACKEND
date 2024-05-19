@@ -21,6 +21,11 @@ ws.on('open', () => {
         });
     }, 1000);
 
+    sendCommand({
+        name: 'on_suits_get_time_left',
+        arguments: { data_type: 'battery' }
+      });
+
 });
 
 ws.on('message', (data) => {

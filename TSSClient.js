@@ -41,16 +41,6 @@ async function getCurrentSpec() {
         console.error('Failed to fetch Spec/Rock data:', error);
         return []; // Return an empty array in case of error
     }    
-
-    // Used for local testing 
-    // try {
-    //     const specData = JSON.parse(fs.readFileSync(path.join(__dirname, 'SPECcopy.json'), 'utf8'));
-    //     const rockData = JSON.parse(fs.readFileSync(path.join(__dirname, 'RockDatacopy.json'), 'utf8'));
-    //     return processSpecData(specData.spec, rockData.ROCKS);
-    // } catch (error) {
-    //     console.error('Error reading local Spec/Rock data:', error);
-    //     return [];
-    // }
 }
 
 async function getCurrentTelemetry() {
