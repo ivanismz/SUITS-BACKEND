@@ -131,8 +131,7 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 server.listen(PORT, '0.0.0.0', () => {
-    const url = process.env.NODE_ENV === 'production' ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com` : `http://localhost:${PORT}`;
-    console.log(`Server listening on ${url}`);
+    console.log(`Server listening on http://localhost:${PORT}`);
 });
