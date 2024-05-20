@@ -167,6 +167,10 @@ app.post('/api/set-eva', (req, res) => {
     }
 });
 
+app.get('/', (req, res) => {
+    res.send('Server is running!');
+});
+
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server listening on http://localhost:${PORT}`);
