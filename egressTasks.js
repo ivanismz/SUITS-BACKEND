@@ -80,7 +80,7 @@ function previousSubtask() {
 }
 
 function repeatSubtask() {
-  const currentFunction = ingressState.subtasks[ingressState.currentSubtaskIndex];
+  const currentFunction = egressState.subtasks[egressState.currentSubtaskIndex];
   return currentFunction();
 }
 

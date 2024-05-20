@@ -1,5 +1,7 @@
 ### Configure the Environment 
 1. config a conda environment following these two repo:https://github.com/ShishirPatil/gorilla and https://github.com/ShishirPatil/gorilla/tree/main/openfunctions
+2. run command `pip install openai==0.28.1`
+3. run command `pip install fastapi uvicorn transformers torch`
    - Note: if you run into errors related to tree-sitter: follow the instruction in https://github.com/ShishirPatil/gorilla/tree/main/openfunctions:
      `pip3 install tree_sitter`
      
@@ -7,7 +9,7 @@
      
       `git clone https://github.com/tree-sitter/tree-sitter-javascript.git`
      
-3. install npm
+4. install npm
 
 LLM related code are located in the `openfunctions` directory, so do `cd openfunctions`
    

@@ -887,7 +887,7 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
         functions_backend = panel_functions_backend
     else:
         functions_backend = suits_functions_backend
-    print("functions_backend", functions_backend, "full prompt", full_prompt)
+    # print("functions_backend", functions_backend, "full prompt", full_prompt)
     return full_prompt, functions_backend
 
 pipe = initialize_pipe()
@@ -896,6 +896,8 @@ run_server()
 # try to move this on server
 # current_menu = "navigation"
 current_menu = "egress"
+# current_menu = "suits"
+# current_menu = "geosampling"
 
 # def on_egress_menu_do_next_task():
 #     curr_task = "1a"
@@ -913,6 +915,8 @@ while True:
 	prompt_1 = get_prompt(system_prompt, input_msg, functions=functions_backend)
 	output_1 = pipe(prompt_1)
 	fn_call_string, function_call_dict = format_response(output_1[0]['generated_text'])
+	if function_call_dict is None:
+		function_call_dict = {'name': 'incorrect_function_call', 'arguments': {"incorrectString": "ERROR: LMCC Please Modify The Function Call Input"}}
 	print("--------------------")
 	print(f"User input is {input_msg}")
 	print(f"Full prompt is input is {full_prompt}")
