@@ -3,15 +3,13 @@ const http = require('http');
 const WebSocket = require('ws');
 const axios = require('axios');
 const { handleCommand } = require('./CommandHandler');
-const { getCurrentState } = require('./TaskStateManager');
+const { getCurrentState, setCurrentEva } = require('./TaskStateManager');
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, maxPayload: 10 * 1024 * 1024 }); // 10 MB max payload
 
 app.use(express.json()); // To handle JSON request bodies
-
-let currentEva = 'eva1';  // Default to 'eva1'. This can be changed via an endpoint.
 
 const connections = {
     "hololens_conn": undefined,
@@ -120,7 +118,7 @@ app.get('/api/task-state', (req, res) => {
 app.post('/api/set-eva', (req, res) => {
     const { eva } = req.body;
     if (eva === 'eva1' || eva === 'eva2') {
-        currentEva = eva;
+        setCurrentEva(eva);
         res.status(200).send(`Current EVA set to ${eva}`);
     } else {
         res.status(400).send('Invalid EVA. Use "eva1" or "eva2".');

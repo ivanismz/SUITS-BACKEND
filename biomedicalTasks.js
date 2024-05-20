@@ -1,6 +1,6 @@
 const { on } = require('ws');
 const { getCurrentTelemetry } = require('./TSSClient');
-const { currentEva } = require('./server');
+const { getCurrentEva } = require('./TaskStateManager');
 
 function onSuitsGetIncorrectRequest() {
     return {
@@ -27,6 +27,7 @@ async function onSuitsGetTimeLeft(params) {
         return onSuitsGetIncorrectRequest();
     }
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     let timeLeft;
     let min;
     let max;
@@ -64,6 +65,7 @@ async function onSuitsGetOxygenStorage(params) {
     }
 
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     let storageValue;
     let min;
     let max;
@@ -93,6 +95,7 @@ async function onSuitsGetOxygenStorage(params) {
 
 async function onSuitsGetOxygenConsumption() {
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     const oxy = telemetryData.telemetry[currentEva].oxy_consumption;
 
     return {
@@ -105,6 +108,7 @@ async function onSuitsGetOxygenConsumption() {
 
 async function onSuitsGetMyHeartRate() {
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     const heartRate = telemetryData.telemetry[currentEva].heart_rate;  // Assuming eva1 is the current suit
     const normalMin = 50;  // Normal minimum heart rate
     const normalMax = 160; // Normal maximum heart rate
@@ -136,6 +140,7 @@ async function onSuitsGetPressureData(params) {
     }
 
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     let pressureValue;
     let min, max;
     let responseFunction;
@@ -193,6 +198,7 @@ async function onSuitsGetFanRatePerMinute(params) {
     }
 
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     let fanValue;
     let min;
     let max;
@@ -222,6 +228,7 @@ async function onSuitsGetFanRatePerMinute(params) {
 }
 
 async function onSuitsGetHelmetPressureCO2() {
+    const currentEva = getCurrentEva();
     const telemetryData = await getCurrentTelemetry();
     const helmetCO2Pressure = telemetryData.telemetry[currentEva].helmet_pressure_co2;
     const min = 0.0;
@@ -243,6 +250,7 @@ async function onSuitsGetHelmetPressureCO2() {
 async function onSuitsGetScrubberCO2Storage(params) {
     const { data_type: scrubberId } = params;
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     const storage = scrubberId === 'A' ? telemetryData.telemetry[currentEva].scrubber_a_co2_storage : telemetryData.telemetry[currentEva].scrubber_b_co2_storage;
     const min = 0;
     const max = 60;
@@ -262,6 +270,7 @@ async function onSuitsGetScrubberCO2Storage(params) {
 // Function for checking temperature inside the suit
 async function onSuitsGetTemperature() {
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     const temperature = telemetryData.telemetry[currentEva].temperature;
     const min = 50;
     const max = 90;
@@ -282,6 +291,7 @@ async function onSuitsGetTemperature() {
 async function onSuitsGetCoolantPressure(params) {
     const { data_type: type } = params;
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     let pressure;
     let min, max;
     let responseFunction;
@@ -311,6 +321,7 @@ async function onSuitsGetCoolantPressure(params) {
 
 async function showMySuitsData() {
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     if (!telemetryData) {
         return {
             function: "display_error_HMD",
@@ -333,6 +344,7 @@ async function showMySuitsData() {
 // Function to show partner's suit data
 async function showPartnerSuitsData() {
     const telemetryData = await getCurrentTelemetry();
+    const currentEva = getCurrentEva();
     if (!telemetryData) {
         return {
             function: "display_error_HMD",

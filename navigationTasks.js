@@ -1,7 +1,7 @@
 const Jimp = require('jimp');
 const fs = require('fs');
 const { getCurrentIMU, getCurrentRover } = require('./TSSClient');
-const { currentEva } = require('./server');
+const { getCurrentEva } = require('./TaskStateManager');
 
 const mapImagePath = './images/map_no_icons.png';
 const homeIconPath = './images/home_icon.png';
@@ -152,6 +152,7 @@ async function onNavigationRemovePin(pinNumber) {
 
 async function onNavigationPinMyLocation(pinNumber) {
     const imuData = await getCurrentIMU();
+    const currentEva = getCurrentEva();
     if (!imuData[currentEva] || imuData[currentEva].posx === undefined || imuData[currentEva].posy === undefined) {
         console.error("Invalid IMU data:", imuData[currentEva]);
         return;

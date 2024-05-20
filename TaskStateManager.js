@@ -67,4 +67,14 @@ function updateState(taskName, newState) {
     }
 }
 
-module.exports = { getCurrentState, updateState };
+let currentEva = 'eva1';
+
+const getCurrentEva = () => currentEva;
+
+const setCurrentEva = (eva) => {
+    if (eva === 'eva1' || eva === 'eva2') {
+        currentEva = eva;
+    }
+};
+
+module.exports = { getCurrentState, updateState, getCurrentEva, setCurrentEva };
