@@ -15,11 +15,6 @@ const connections = {
     "hololens_conn": undefined,
     "lmcc_conn": undefined,
 }
-
-app.use(express.json());
-const dbURI = process.env.MONGODB_URI;
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
-
 // var backdoor = undefined;
 
 wss.on('connection', function connection(ws) {
