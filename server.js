@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 const axios = require('axios');
 const { handleCommand } = require('./CommandHandler');
 const { getCurrentState } = require('./TaskStateManager');
-const Blob = require('node-blob');
+
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server, maxPayload: 10 * 1024 * 1024 }); // 10 MB max payload
