@@ -1,4 +1,4 @@
-const TSS_URL = 'http://172.18.0.1:14141'; // URL of the TSS
+const TSS_URL = 'http://192.168.51.110:14141'; // URL of the TSS
 const axios = require('axios');
 
 async function getCurrentIMU() {
