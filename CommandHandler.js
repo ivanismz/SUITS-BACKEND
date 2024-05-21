@@ -114,7 +114,7 @@ const taskMap = {
     "show_partner_suits_data": biomedicalTasks.showPartnerSuitsData,
     "incorrect_function_call": errorTasks.incorrectFunctionCall,
     "on_geosampling_menu_start": geoSampling.onGeosamplingMenuStart,
-    "on_geosampling_menu_check_current_rock_HMD": geoSampling.onGeosamplingMenuCheckCurrentRock
+    "on_geosampling_menu_check_current_rock": geoSampling.onGeosamplingMenuCheckCurrentRock
 };
 
 async function handleCommand(commandObject) {

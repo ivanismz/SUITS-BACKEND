@@ -846,7 +846,7 @@ def create_prompt_and_function_descriptions(user_input_prompt, current_menu):
 	# ######################################## GEOLOGICAL SAMPLING ###################################################################
     geosampling_functions_backend = [
 		{
-       "name": "on_geosampling_check_current_sample",
+       "name": "on_geosampling_menu_check_current_rock",
        "description": "check the data of the cureent rock sample",
        "parameters": {
            "required": []
@@ -908,19 +908,26 @@ while True:
 	input_msg = get_server_input()
 	while not input_msg:
 		input_msg = get_server_input()
-	
-	print("input_msg", input_msg, "task ", current_menu)
-	full_prompt, functions_backend = create_prompt_and_function_descriptions(input_msg, current_menu)
-	system_prompt = "You are an AI programming assistant, you are on menu {}".format(current_menu)
-	prompt_1 = get_prompt(system_prompt, input_msg, functions=functions_backend)
-	output_1 = pipe(prompt_1)
-	fn_call_string, function_call_dict = format_response(output_1[0]['generated_text'])
-	if function_call_dict is None:
-		function_call_dict = {'name': 'incorrect_function_call', 'arguments': {"incorrectString": "ERROR: LMCC Please Modify The Function Call Input"}}
-	print("--------------------")
-	print(f"User input is {input_msg}")
-	print(f"Full prompt is input is {full_prompt}")
-	print(f"Function call strings 1(s): {fn_call_string}")
-	print(f"OpenAI compatible `function_call`: {function_call_dict}")
-	print("--------------------")
-	put_llm_response(function_call_dict)
+
+	print("input_msg", input_msg)
+	if input_msg[:5] == "menu:":
+		current_menu = input_msg[5:]
+		print("current menu ", current_menu)
+		function_call_dict = {'name': 'incorrect_function_call', 'arguments': {"incorrectString": "the current menu is changed to " + current_menu}}
+		put_llm_response(function_call_dict)
+	else:
+		print("current menu ", current_menu)
+		full_prompt, functions_backend = create_prompt_and_function_descriptions(input_msg, current_menu)
+		system_prompt = "You are an AI programming assistant, you are on menu {}".format(current_menu)
+		prompt_1 = get_prompt(system_prompt, input_msg, functions=functions_backend)
+		output_1 = pipe(prompt_1)
+		fn_call_string, function_call_dict = format_response(output_1[0]['generated_text'])
+		if function_call_dict is None:
+			function_call_dict = {'name': 'incorrect_function_call', 'arguments': {"incorrectString": "ERROR: LMCC Please Modify The Function Call Input"}}
+		print("--------------------")
+		print(f"User input is {input_msg}")
+		print(f"Full prompt is input is {full_prompt}")
+		print(f"Function call strings 1(s): {fn_call_string}")
+		print(f"OpenAI compatible `function_call`: {function_call_dict}")
+		print("--------------------")
+		put_llm_response(function_call_dict)

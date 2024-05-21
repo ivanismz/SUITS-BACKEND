@@ -142,7 +142,13 @@ functions_rover = [
              },
         "required": ["angle"],
         },
-    }
+    }, {
+    "name": "on_rover_return_to_base",
+    "description": "Rover returns to 0,0,0 on map frame",
+    "parameters": {
+        "required": [],
+        }, 
+    }   
     ]
 
 def convert_function_call_dict_to_os_commands(function_call_dict):
